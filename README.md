@@ -1,6 +1,7 @@
-# umutsevdi.com
+# [umutsevdi.com](https://www.umutsevdi.com)
 
-This directory contains source code of my server-side rendered web application.
+This directory contains the source code of my server-side rendered web
+application. Check it out from [here](https://www.umutsevdi.com).
 
 ```
 webserver/
@@ -30,8 +31,9 @@ webserver/
 ```
 
 ## Installing
-Install go, and compile the source code
-```
+Install go, and compile the source code.
+
+```sh
 cd webserver
 wget https://go.dev/dl/go-version
 tar -xvf go-version.tar.gz

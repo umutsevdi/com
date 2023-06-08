@@ -47,6 +47,7 @@ func init() {
 	m["Vim"] = ""
 	m["Vim Snippet"] = ""
 	updateCache(GetPinnedRepositories(util.Config.User))
+	syslog.Info(cache)
 }
 
 // Gets the pinned repositories of given username
@@ -54,9 +55,9 @@ func init() {
 // @return *[]Repository Repositories of the account
 // @return error on failure
 func GetPinnedRepositories(username string) (*[]Repository, error) {
-	if cache.repositories != nil && cache.lastExecutionTime.
-		Before(time.
-			Now().Add(time.Duration(util.Config.ApiCache)*time.Hour)) {
+	if cache.repositories != nil && time.Now().
+		Before(cache.lastExecutionTime.Add(time.Duration(util.Config.ApiCache)*time.Minute)) {
+		syslog.Info(cache.lastExecutionTime.String(), " responding with cache")
 		return cache.repositories, nil
 	}
 

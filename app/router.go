@@ -81,13 +81,13 @@ func index() ([]byte, error) {
 		return data, err
 	}
 	for _, i := range *repos {
-		s.WriteString("<li><div class=\"project-card\"><a target=\"_blank\" href=\"" +
-			i.Url + "\"><h2>" + i.Name + "</h2><p class=\"project-icon-block\">")
+		s.WriteString("<li><a target=\"_blank\" href=\"" +
+			i.Url + "\"><div class=\"project-titlebox\"><h2>" + i.Name + "</h2><p class=\"project-icon-block\">")
 		for _, j := range i.Language {
-			s.WriteString("<span class=\"mono-icon\" style=\"color: " + j.Hex + ";\"> " + client.UnicodeForLanguage(j.Name) + " </span>")
+			s.WriteString(client.UnicodeForLanguage(j.Name))
 		}
-		s.WriteString("<div class=\"project-p-split\"><p>" + i.Description + "</p>")
-		s.WriteString("</div></a></div></li>")
+		s.WriteString("</div><p class=\"project-desc\">" + i.Description + "</p>")
+		s.WriteString("</a></li>")
 	}
 	sdata := setYear(string(data))
 	return []byte(strings.Replace(sdata, "$PROJECTS", s.String(), 1)), nil

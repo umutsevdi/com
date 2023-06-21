@@ -26,26 +26,26 @@ type Cache struct {
 
 func init() {
 	m = make(map[string]string)
-	m["Shell"] = ""
-	m["C"] = ""
-	m["CSS"] = ""
-	m["C++"] = ""
-	m["CMake"] = ""
-	m["Dockerfile"] = ""
-	m["Go"] = ""
-	m["GDScript"] = ""
-	m["HTML"] = ""
-	m["Java"] = " "
-	m["JavaScript"] = ""
-	m["Lua"] = "󰢱"
-	m["Makefile"] = ""
-	m["Perl"] = " "
-	m["Python"] = " "
-	m["Jupyter Notebook"] = ""
-	m["PLpgSQL"] = ""
-	m["TypeScript"] = "󰛦"
-	m["Vim"] = ""
-	m["Vim Snippet"] = ""
+	m["Shell"] = "/static/img/icon/langbash.png"
+	m["C"] = "/static/img/icon/langc.png"
+	m["CSS"] = "/static/img/icon/langcss.png"
+	m["C++"] = "/static/img/icon/langcpp.png"
+	m["CMake"] = "/static/img/icon/langcmake.png"
+	m["Dockerfile"] = "/static/img/icon/langdocker.png"
+	m["Go"] = "/static/img/icon/langdocker.png"
+	m["GDScript"] = "/static/img/icon/langgodot.png"
+	m["HTML"] = "/static/img/icon/langhtml.png"
+	m["Java"] = "/static/img/icon/langjava.png"
+	m["JavaScript"] = "/static/img/icon/langjs.png"
+	m["Lua"] = "/static/img/icon/langlua.png"
+	m["Makefile"] = "/static/img/icon/langmake.png"
+	m["Perl"] = "/static/img/icon/langperl.png"
+	m["Python"] = "/static/img/icon/langpython.png"
+	m["Jupyter Notebook"] = "/static/img/icon/langpython.png"
+	m["PLpgSQL"] = "/static/img/icon/langsql.png"
+	m["TypeScript"] = "/static/img/icon/langts.png"
+	m["Vim"] = "/static/img/icon/langvim.png"
+	m["Vim Snippet"] = "/static/img/icon/langvim.png"
 	updateCache(GetPinnedRepositories(util.Config.User))
 	syslog.Info(cache)
 }
@@ -119,7 +119,7 @@ func updateCache(r *[]Repository, err error) {
 
 func UnicodeForLanguage(input string) string {
 	if v, ok := m[input]; ok {
-		return v
+		return "<img src=\"" + v + "\" alt=\"" + input + "\">"
 	}
 	return input
 }

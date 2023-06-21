@@ -1,7 +1,7 @@
 /* Fonts */
 @font-face {
-  font-family: 'Blex Mono';
-  src: url('/static/fonts/Blex/Blex Mono Nerd Font Complete Mono.ttf');
+  font-family: 'IBMPlexMono';
+  src: url('/static/fonts/IBMPlexMono/IBMPlexMono-Regular.ttf');
   font-weight: normal;
   font-style: normal;
 }
@@ -12,7 +12,7 @@
   font-style: normal;
 }
 code, pre, kbd {
-  font-family: 'Blex Mono', monospace;
+  font-family: 'IBMPlexMono', monospace;
 }
 
 /* Color Palette */
@@ -128,10 +128,6 @@ input, button, textarea, select {
 
 .back-shadow {
   box-shadow: 0 1rem 2rem 0.3rem var(--dark-bg);
-}
-
-.mono-icon {
-  font-family: "Blex Mono", monospace;
 }
 
 a {
@@ -304,13 +300,16 @@ header {
   background-color:  var(--bg-transparent);
   border-radius: 0.3rem;
   padding: 2rem;
-  margin: 0 30%;
+  width: 30%;
+  margin: 0 35%;
 
 }
 
 @media only screen and (max-width: 600px) {
     .home-card {
-      margin: 0 20%;
+      width: 60%;
+      margin: 0 15%;
+      /* margin: 0 20%; */
     }
 }
 .home-img {
@@ -338,7 +337,7 @@ header {
 }
 
 .home-text > p {
-  font-family: BlexMono, monospace;
+  font-family: IBMPlexMono, monospace;
   font-weight: bolder;
   font-style: italic;
   padding-bottom: 0.5rem;
@@ -346,8 +345,18 @@ header {
 
 .home-social {
   align-items: center;
-  margin-bottom: 2rem;
   display: flex;
+}
+
+.home-social-last {
+  margin-bottom: 2.0rem;
+  display: flexbox;
+}
+
+@media only screen and (max-width: 600px) {
+    .home-social-last {
+        display: flex;
+    }
 }
 
 .social-button {
@@ -355,23 +364,22 @@ header {
   background-color: var(--fg);
   transition: 0.2s;
   align-items: center;
-
-  padding: 0 1.5rem;
-  margin: 0 1.0rem;
+  padding: 0.5rem;
+  margin: 1.0rem;
   border-radius: 50%;
 }
 
-.social-button > p {
-  font-size:3rem;
-  width: 100%;
+.social-button > img {
+  width:  3rem;
+  height: 3rem;
 }
 
 .social-button:hover {
   background-color: var(--dark-yellow-bright);
   box-shadow: 0 1 2rem var(--dark-yellow-bright);
-  margin: 0 2rem;
   transform: scale(1.3);
   transition: 0.15s;
+  margin: 1rem 1.5rem;
 }
 
 .cv-button {
@@ -381,18 +389,20 @@ header {
   border-radius: 0.3rem;
   transition: 0.2s;
   align-items: center;
-  padding: 0 1rem;
+  margin: 0.2rem;
+  padding: 0.5rem;
 }
 
-.cv-button > .cv-icon {
-  font-size:3rem;
-  width: 100%;
+.cv-button > img {
+  width:  3rem;
+  height: 3rem;
 }
 
 .cv-button:hover {
   background-color: var(--dark-yellow-bright);
   box-shadow: 0 1 2rem var(--dark-yellow-bright);
   transform: scale(1.2);
+  margin: 0.2 1rem;
   transition: 0.15s;
 }
 
@@ -430,7 +440,7 @@ header {
 
 .section > div > h2 {
   font-size: 2rem;
-  font-family: 'BlexMono',monospace;
+  font-family: 'IBMPlexMono',monospace;
   font-weight: bold;
 }
 
@@ -503,11 +513,11 @@ header {
 .project-list {
   text-decoration: none;
   align-items: center;
-  text-indent: 0;
   margin: 2.5rem 0;
+  padding: 0;
 }
 
-.project-card  {
+.project-list > li {
   border: 0.2rem solid var(--fg);
   border-radius: 0.3rem;
   transition: 0.2s;
@@ -515,49 +525,59 @@ header {
   background: var(--dark-bg);
 }
 
-.project-card > a {
+.project-list > li > a {
     text-indent: 2rem;
 }
 
-.project-card > a > h2 {
+.project-titlebox {
+    display:flex;
+    justify-content: space-between;
+}
+
+.project-titlebox > h2 {
     color: var(--fg);
     font-weight: bold;
     transition: 0.2s;
 /*   border-bottom: 0.1rem solid var(--fg); */
 }
 
-.project-p-split {
-    display: flex;
-    align-items: center;
-}
-
-.project-p-split > p {
+.project-desc  {
     font-size: 0.8rem;
     color: var(--dark-fg);
-    font-family: BlexMono, monospace;
+    font-family: 'IBMPlexMono', monospace;
     font-style: italic;
     margin: 0 1rem;
 }
 
-.project-icon-block > span {
-    font-size: 1.5rem;
-    font-style: normal;
-}
-
 .project-icon-block {
+    padding-right: 2rem;
+}
+
+.project-icon-block > img {
     display: inline;
-    padding-left: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0 0.5rem;
 }
 
-.project-card:hover  {
+.project-list > li:hover  {
   border: 0.2rem solid var(--focus);
-  transition: 0.15s;
+  transition: 0.2s;
+  padding: 1rem;
 }
 
-.project-card:hover > a > h2 {
+.project-list > li:hover > a > div > h2 {
   color: var(--focus);
   transition: 0.15s;
 }
+
+@media only screen and (max-width: 600px) {
+    .project-icon-block > img {
+        display: inline;
+        margin: 0rem;
+    }
+}
+
 
 
 /* Footer */
@@ -588,10 +608,11 @@ header {
   background-color:transparent;
 }
 
-.footer-item > a > p {
-  color: var(--fg);
-  font-style: normal;
-  font-size: 2rem;
+.footer-item > a > img {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  overflow: hidden;
   margin: 0 0.5rem;
 }
 

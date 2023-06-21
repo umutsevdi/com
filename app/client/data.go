@@ -64,7 +64,7 @@ func sendRequest(username string) (string, error) {
 		"          ... on Repository {" +
 		"          name " +
 		"          url " +
-		"          languages(first: 10) { " +
+		"          languages(first: 3) { " +
 		"            edges {" +
 		"              node { " +
 		"                color " +

@@ -43,8 +43,9 @@ body {
   line-height: 1.5;
   padding: 0;
   margin: 0;
-  background-color: var(--bg-dark);
+  background-color: var(--bg);
   color: var(--fg);
+  height: 100%;
 }
 
 a:not([class]) {
@@ -117,7 +118,7 @@ li {
 header {
   position: sticky;
   top: 3vh;
-  height: 0vh;
+  height: 0;
   width: 100%;
   background-color: transparent;
   display: flex;
@@ -561,30 +562,32 @@ header {
 .section {
   display: flexbox;
   width: 100%;
-  margin: 0 auto;
 }
 
 .about {
   scroll-margin-block-start: 5vh;
   background: var(--bg);
-  height: 100%;
 }
 
 .about-text  {
   align-self: center;
   max-width: 85%;
-  margin: 0rem auto 5rem;
+  margin: 0rem auto 0rem;
+}
+
+.about-text > ul {
+    padding: 0 2rem;
 }
 
 @media only screen and (max-width: 600px) {
   .about-text {
     max-width: 100%;
-    margin: 0rem 2rem 5rem;
+    margin: 0rem 2rem 0rem;
   }
 }
 
 .section > div > p {
-  margin: 1.5rem 0;
+  padding: 1.5rem 0;
 }
 
 .section > div > h1 {
@@ -607,21 +610,22 @@ header {
 
 .projects {
   scroll-margin-block-start: 5vh;
-  height: 100%;
   align-self: center;
   align-items: center;
-  background-image:  url(/static/img/landing-page.jpeg),linear-gradient(var(--bg-dark), var(--bg-pressed)); /* W3C */
+  background: linear-gradient(var(--bg), var(--bg-semi),  var(--bg-dark)), url(/static/img/landing-page.jpeg);
+  background-size: cover;
+  height: 100%;
 }
 
 .projects > div {
   align-self: center;
   max-width: 85%;
-  margin: 0rem auto 5rem;
+  margin: 0rem auto 0rem;
 }
 
 @media only screen and (max-width: 600px) {
   .projects > div {
-    margin: 0rem auto 5rem;
+    margin: 0rem auto 0rem;
   }
 }
 
@@ -710,7 +714,6 @@ header {
   position: sticky;
   left: 0;
   bottom: 0;
-  height: 3vh;
   width: 100%;
   display: flex;
   justify-content: space-between;

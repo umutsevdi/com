@@ -1,19 +1,21 @@
 package main
 
 import (
-	"net/http"
-	"server/syslog"
-	"server/util"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"log"
 	"strconv"
+	"umutsevdi/com/config"
+	"umutsevdi/com/pages"
 )
 
 func main() {
-	router()
-}
+	e := echo.New()
+	e.Use(middleware.GzipWithConfig(middleware.GzipConfig{
+		Level: 5,
+	}))
+	go pages.Serve(e)
+	str := ":" + strconv.Itoa(int(*config.C.Port))
+	log.Fatal(e.Start(str))
 
-func router() {
-	http.HandleFunc("/", Serve)
-	http.HandleFunc("/static/", ServeStatic)
-	syslog.Info("main   Server is started from :" + strconv.Itoa(util.Config.Port))
-	syslog.Fatal(http.ListenAndServe(util.Config.Ip+":"+strconv.Itoa(util.Config.Port), nil))
 }

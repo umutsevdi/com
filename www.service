@@ -1,0 +1,10 @@
+[Unit]
+Description=My website
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/bin/bash /root/com.yildizskylab/launch.sh
+
+[Install]
+WantedBy=multi-user.target

@@ -1,2 +1,2 @@
-# com.yildizskylab
-YTU SKY LAB Kulübü'nün web sayfası
+# com.umutsevdi 
+Source code of the website

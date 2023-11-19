@@ -15,7 +15,6 @@ var pageCaches map[string][]byte
 
 func Serve(e *echo.Echo) {
 	config.StartIndexing()
-
 	config.MapEach("pages", func(k string, v config.FData) {
 		e.GET(k, ServePage)
 	})

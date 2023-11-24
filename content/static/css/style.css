@@ -1,21 +1,21 @@
 :root {
-  --bg-none:              #00000000;
-  --bg:                   #333333;   /* Jet */
-  --bg-pressed:           #505050;   /* Davy's Gray */
-  --bg-dark:              #131112;   /* Night */
-  --primary:              #FFCE51;   /* Sunglow */
-  --primary-pressed:      #FADB8B;   /* Jasmine */
-  --fg:                   #EBDBB2;   /* Dutch White */
-  --bg-semi:              #33333366; /* Jet */
-  --bg-pressed-semi:      #50505066; /* Davy's Gray */
-  --bg-dark-semi:         #13111266; /* Night */
-  --primary-semi:         #FFCE5166; /* Sunglow */
-  --primary-pressed-semi: #FADB8B66; /* Jasmine */
-  --fg-semi:              #EBDBB266; /* Dutch White */
+  --bg-none:        #00000000;
+  --bg:             #333333;   /* Jet */
+  --bg-pressed:     #505050;   /* Davy's Gray */
+  --bg-dark:        #131112;   /* Night */
+  --primary:        #FFCE51;   /* Sunglow */
+  --click:          #FADB8B;   /* Jasmine */
+  --fg:             #EBDBB2;   /* Dutch White */
+  --bg-semi:        #33333366; /* Jet */
+  --bg-pressed-semi:#50505066; /* Davy's Gray */
+  --bg-dark-semi:   #13111266; /* Night */
+  --pri-semi:       #FFCE5166; /* Sunglow */
+  --click-semi:     #FADB8B66; /* Jasmine */
+  --fg-semi:        #EBDBB266; /* Dutch White */
 }
 
 /*******************************************************************************
- *                          Common CSS Settings
+ *              Common CSS Settings
  ******************************************************************************/
 *::before,
 *::after {
@@ -105,7 +105,7 @@ a {
 
 .link:active {
   color: var(--bg-dark);
-  background-color: var(--primary-pressed);
+  background-color: var(--click);
 }
 
 li {
@@ -113,7 +113,7 @@ li {
 }
 
 /*******************************************************************************
- *                            Header Navigation
+ *              Header Navigation
  ******************************************************************************/
 header {
   position: sticky;
@@ -183,110 +183,110 @@ header {
 
 @media screen and (max-width: 600px) {
   header {
-    top: 2rem;
-    height: 0vh;
-    width:100%;
+  top: 2rem;
+  height: 0vh;
+  width:100%;
   }
 
   .header-left > a{
-    background-color: transparent;
+  background-color: transparent;
   }
 
   .header-left > a:hover{
-    background-color: transparent;
+  background-color: transparent;
   }
 
 
   .header-left > a > img {
-      margin: auto 0rem;
-      border: 0.35rem solid var(--bg-dark)
+    margin: auto 0rem;
+    border: 0.35rem solid var(--bg-dark)
   }
 
   .header-left > a:hover > img {
-      margin: auto 0rem;
-      border: 0.35rem solid var(--primary);
+    margin: auto 0rem;
+    border: 0.35rem solid var(--primary);
   }
 
   .header-left > a:active > img {
-      border: 0.35rem solid var(--primary-pressed);
+    border: 0.35rem solid var(--click);
   }
 
   .header-left > a > p {
-    display: none;
+  display: none;
   }
 
   .header-right{
-    width: 100%;
-    justify-content:end;
-    align-items:end;
+  width: 100%;
+  justify-content:end;
+  align-items:end;
   }
 
   .nav ul {
-    display: none;
-    flex-direction: column;
-    background-color: var(--bg-dark);
-    position: absolute;
-    width: 70%;
-    top: 100%;
-    right: 0;
-    z-index: 1000;
+  display: none;
+  flex-direction: column;
+  background-color: var(--bg-dark);
+  position: absolute;
+  width: 70%;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
   }
 
   .nav ul.active {
-    display: flex;
+  display: flex;
   }
 
 
   .nav ul li {
-    padding-left: 0;
-    width: 100%;
-    text-align: center;
+  padding-left: 0;
+  width: 100%;
+  text-align: center;
   }
 
   .nav-sublist {
-    padding-left: 0;
-    width: 100%;
-    text-align: center;
+  padding-left: 0;
+  width: 100%;
+  text-align: center;
   }
 
   .nav-toggle {
-    display: block;
-    background-color: var(--bg-dark);
-    border-radius: 4rem;
-    margin: 2rem 0.5rem;
-    transition: 0.15s;
+  display: block;
+  background-color: var(--bg-dark);
+  border-radius: 4rem;
+  margin: 2rem 0.5rem;
+  transition: 0.15s;
   }
 
   .header-right {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
   }
 
   .header-right .nav {
-    display: none;
-    flex: 1;
-    justify-content: flex-end;
+  display: none;
+  flex: 1;
+  justify-content: flex-end;
   }
 
   .header-right .nav.active {
-    display: flex;
-    background-color: var(--primary-pressed);
+  display: flex;
+  background-color: var(--click);
   }
 
   .nav-toggle:hover {
-    background-color: var(--primary);
-    transition: 0.15s;
+  background-color: var(--primary);
+  transition: 0.15s;
   }
 
   .nav-toggle:active {
-    background-color: var(--primary-pressed);
-    color: var(--bg-dark);
-    transition: 0.15s;
+  background-color: var(--click);
+  color: var(--bg-dark);
+  transition: 0.15s;
   }
 
   .nav-toggle:hover > div {
-    background-color: var(--bg-dark);
-    transition: 0.15s;
+  background-color: var(--bg-dark);
+  transition: 0.15s;
   }
 
 }
@@ -370,46 +370,46 @@ header {
 }
 
 @media screen and (max-width: 600px) {
-    .nav-sublist {
-        margin-top:0;
-      border-radius: 1rem;
+  .nav-sublist {
+    margin-top:0;
+    border-radius: 1rem;
   transition: 0.3s;
-    }
+  }
 
-    .nav > ul {
-      background-color: var(--bg-dark);
-      border-radius: 1rem;
-      transition: 0.3s;
-    }
+  .nav > ul {
+    background-color: var(--bg-dark);
+    border-radius: 1rem;
+    transition: 0.3s;
+  }
 
-    .nav-item > a {
-      transition: 0.3s;
-      color: var(--fg);
-      margin: 1.5rem;
-      text-decoration: none;
-      font-style: normal;
-      position: relative;
-    }
+  .nav-item > a {
+    transition: 0.3s;
+    color: var(--fg);
+    margin: 1.5rem;
+    text-decoration: none;
+    font-style: normal;
+    position: relative;
+  }
 
-    .nav-item:hover {
-      transition: 0.3s;
-      border-radius: 2rem;
-    }
+  .nav-item:hover {
+    transition: 0.3s;
+    border-radius: 2rem;
+  }
 
-    .nav-item:hover > a {
-      margin-left: 4rem;
-      transition: 0.3s;
-    }
+  .nav-item:hover > a {
+    margin-left: 4rem;
+    transition: 0.3s;
+  }
 
-    .sublist-item {
-      transition: 0.3s;
-      padding: 0.2rem 0.5rem;
-    }
+  .sublist-item {
+    transition: 0.3s;
+    padding: 0.2rem 0.5rem;
+  }
 
-    .sublist-item:hover {
-      transition: 0.3s;
-      padding: 0.2rem 1rem;
-    }
+  .sublist-item:hover {
+    transition: 0.3s;
+    padding: 0.2rem 1rem;
+  }
 
 }
 
@@ -419,16 +419,16 @@ header {
 .nav-toggle:active,
 .sublist-item:active,
 .nav-item:active {
-    background-color: var(--primary-pressed);
-    transition: 0.15s;
+  background-color: var(--click);
+  transition: 0.15s;
 }
 
 
 /*******************************************************************************
- *                                Home Section
+ *                Home Section
  ******************************************************************************/
 .home {
-  height: 95vh;
+  height: 95vch;
   background-image: url(/static/img/landing-page.jpeg);
   background-position: center;
   background-size: cover;
@@ -447,15 +447,15 @@ header {
   background-color: transparent;
   padding: 1rem 2rem;
   max-width: 65%;
-  margin: auto 2rem;
+  margin: 2rem 2rem;
   background-color:  var(--bg);
   border-radius: 1rem;
 }
 
 @media only screen and (max-width: 600px) {
   .home-card {
-  margin: auto 2rem;
-  max-width: 90%;
+  margin: auto 5rem;
+  max-width: 85%;
   }
 }
 .home-img {
@@ -486,7 +486,7 @@ header {
 .home-text > h1 > strong {
   font-size: 4rem;
   font-weight: bolder;
-  color: var(--primary-pressed)
+  color: var(--click)
 }
 
 .home-text > p {
@@ -510,7 +510,7 @@ header {
 
 .social-button {
   transition: 0.2s;
-  margin: 1rem;
+  margin: 0.8rem;
   border-radius: 100%;
   width:  3.5rem;
   height: auto;
@@ -522,8 +522,10 @@ header {
 }
 
 .social-button:hover {
-    scale: calc(1.3);
-/*    margin: 1rem 2.0rem; */
+   scale: calc(1.3);
+}
+.social-button:hover > img {
+  background-color: var(--click);
 }
 
 .cv-button {
@@ -550,13 +552,14 @@ header {
   transition: 0.15s;
 }
 
+.social-button:active > img,
 .cv-button:active {
-  background-color: var(--primary-pressed);
+  background-color: var(--click);
   transition: 0.15s;
 }
 
 /*******************************************************************************
- *                                About
+ *                About
  ******************************************************************************/
 
 .section {
@@ -576,13 +579,13 @@ header {
 }
 
 .about-text > ul {
-    padding: 0 2rem;
+  padding: 0 2rem;
 }
 
 @media only screen and (max-width: 600px) {
   .about-text {
-    max-width: 100%;
-    margin: 0rem 2rem 0rem;
+  max-width: 100%;
+  margin: 0rem 2rem 0rem;
   }
 }
 
@@ -625,7 +628,7 @@ header {
 
 @media only screen and (max-width: 600px) {
   .projects > div {
-    margin: 0rem auto 0rem;
+  margin: 0rem auto 0rem;
   }
 }
 
@@ -640,7 +643,7 @@ header {
 }
 
 .project-item-double-size {
-    grid-column: span 2;
+  grid-column: span 2;
 }
 
 .project-list > li {
@@ -652,17 +655,15 @@ header {
 }
 
 .project-list > li:hover {
-  border: 0.2rem solid var(--primary);
-  border-radius: 0.3rem;
+  border: 0.4rem solid var(--primary);
   transition: 0.2s;
-  background: var(--bg-dark);
-  padding: 0.5rem 1rem;
+  margin: 0.9rem 0.3rem;
 }
 
 .project-box > h2 {
-    color: var(--primary-pressed);
-    font-weight: bold;
-    transition: 0.15s;
+  color: var(--click);
+  font-weight: bold;
+  transition: 0.15s;
 /*   border-bottom: 0.1rem solid var(--fg); */
 }
 
@@ -672,39 +673,38 @@ header {
 }
 
 .project-box {
-    text-indent: 2rem;
+  text-indent: 2rem;
 }
 
 .project-desc {
-    font-size: 0.8rem;
-    color: var(--fg);
-    font-family: 'IBMPlexMono', monospace;
-    font-style: italic;
-    margin: 0 1rem;
+  font-size: 0.8rem;
+  color: var(--fg);
+  font-family: 'IBMPlexMono', monospace;
+  font-style: italic;
+  margin: 0 1rem;
 }
 
 .project-icon-block {
-    padding-top: 2rem;
-    padding-right: 2rem;
+  padding-top: 2rem;
+  padding-right: 2rem;
 }
 
 .project-icon-block > img {
-    display: inline;
-    width: 1.5rem;
-    height: 100%;
+  display: inline;
+  width: 1.5rem;
 }
 
 @media only screen and (max-width: 600px) {
-    .project-icon-block > img {
-        display: inline;
-        margin: 0rem;
-    }
-    .project-list {
-      display: block;
-    }
-    .project-box {
-        width: 100%;
-    }
+  .project-icon-block > img {
+    display: inline;
+    margin: 0rem;
+  }
+  .project-list {
+    display: block;
+  }
+  .project-box {
+    width: 100%;
+  }
 }
 
 
@@ -739,9 +739,9 @@ header {
 
 @media only screen and (max-width: 600px) {
   .resume-card {
-      margin: 0 2%;
-      padding: 0.5rem;
-    }
+    margin: 0 2%;
+    padding: 0.5rem;
+  }
 }
 
 
@@ -786,6 +786,20 @@ header {
 
 @media only screen and (max-width: 600px) {
 .footer-item {
-    width: 100%;
+  width: 100%;
 }
+}
+
+/*******************************************************************************
+ *                Not Found Section
+ ******************************************************************************/
+.not-found {
+  height: 100vh;
+  background-image: url(/static/img/landing-page.jpeg);
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
 }

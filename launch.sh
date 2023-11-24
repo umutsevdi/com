@@ -1,3 +1,3 @@
 #!/bin/bash
-cd /root/com.yildizskylab/
+cd /app/com/
 ./site

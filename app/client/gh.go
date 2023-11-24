@@ -55,8 +55,6 @@ func GetGh() []Repository {
 
 func FetchGh(user, token string) {
 	lock = true
-
-	log.Println("Github Fetching")
 	buffer, err := sendRequest(user, token)
 	if err != nil {
 		log.Println("Error: Failed to fetch from Github")
@@ -75,7 +73,6 @@ func FetchGh(user, token string) {
 		}
 		repositories[i].DoubleSize = i == 1 || i == 2 || i == 5
 	}
-	log.Println("Github Done")
 	lock = false
 }
 

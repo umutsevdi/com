@@ -15,17 +15,24 @@ import (
 	"bytes"
 	"html/template"
 	"log"
-	"strings"
 	"time"
 
 	"umutsevdi/com/client"
 	"umutsevdi/com/config"
 )
 
+const (
+	PAGES      = "pages"
+	COMPONENTS = "components"
+	STATIC     = "static"
+)
+
 type FData struct {
 	Path         string
 	Content      []byte
 	LastModified time.Time
+	Created      time.Time
+	Type         string
 }
 
 var Dict Container = Container{}
@@ -75,11 +82,11 @@ func (c *Container) Each(table string, f func(string, FData)) {
 	}
 	var m *map[string]*FData
 	switch table {
-	case "components":
+	case COMPONENTS:
 		m = &Dict.components
-	case "pages":
+	case PAGES:
 		m = &Dict.pages
-	case "static":
+	case STATIC:
 		m = &Dict.static
 	}
 	if m == nil {
@@ -129,9 +136,16 @@ func runIndexingBatch() {
 	log.Println("IndexBatch", *config.C.ContentPath, "was completed successfully in", time.Now().Sub(s).Seconds(), "seconds")
 }
 
-type DataTempl struct {
+type PageTemplate struct {
 	Repositories []client.Repository
 	Footer       struct {
+		Year int
+	}
+}
+
+type GemTemplate struct {
+	Template Gemtext
+	Footer   struct {
 		Year int
 	}
 }
@@ -141,7 +155,10 @@ type DataTempl struct {
 // - Only affects {{ template }} calls
 
 func processTemplates() {
-	data := DataTempl{
+	gemData := GemTemplate{
+		Footer: struct{ Year int }{Year: time.Now().Year()},
+	}
+	pageData := PageTemplate{
 		Repositories: client.GetGh(),
 		Footer:       struct{ Year int }{Year: time.Now().Year()},
 	}
@@ -154,34 +171,53 @@ func processTemplates() {
 		}
 	}
 	for k, v := range Dict.pages {
-		t, err := template.New(k).Parse(string(v.Content))
-		if err != nil {
-			log.Println("error while parsing ", k, err.Error())
-			continue
+		if v.Type == ".gmi" {
+			processGeminiFiles(k, v, &comp, &gemData)
+		} else {
+			processHtmlTemplate(k, v, &comp, &pageData)
 		}
-		for _, c := range comp {
-			t, err = t.Parse(c)
-			if err != nil {
-				log.Println("error while parsing template on page", err.Error())
-				err = nil
-			}
-		}
-		var w *bytes.Buffer = bytes.NewBuffer([]byte{})
-		w.Reset()
-		err = t.ExecuteTemplate(w, k, data)
-		if err != nil {
-			log.Println("Error during template execution", err.Error())
-		}
-		Dict.pages[k].Content = w.Bytes()
 	}
 }
 
-// Parses received URL and extracts it's extension
-//
-//	@param URL path to file
-//	@return string corresponding extension type in the format of .type
-func Ext(url string) string {
-	p := strings.Split(url, "/")
-	fname := strings.Split(p[len(p)-1], ".")
-	return "." + fname[len(fname)-1]
+func processGeminiFiles(k string, v *FData, comp *[]string, data *GemTemplate) {
+	data.Template = parseGemini(v)
+	t := template.New(k)
+	var err error
+	for _, c := range *comp {
+		t, err = t.Parse(c)
+		if err != nil {
+			log.Println("error while parsing template on page", err.Error())
+			err = nil
+		}
+	}
+	var w *bytes.Buffer = bytes.NewBuffer([]byte{})
+	w.Reset()
+	err = t.ExecuteTemplate(w, "components/gmi", data)
+	if err != nil {
+		log.Println("Error during template execution", err.Error())
+	}
+	Dict.pages[k].Content = w.Bytes()
+}
+
+func processHtmlTemplate(k string, v *FData, comp *[]string, data *PageTemplate) {
+	t, err := template.New(k).Parse(string(v.Content))
+	if err != nil {
+		log.Println("error while parsing ", k, err.Error())
+		return
+	}
+	for _, c := range *comp {
+		t, err = t.Parse(c)
+		if err != nil {
+			log.Println("error while parsing template on page", err.Error())
+			err = nil
+		}
+	}
+	var w *bytes.Buffer = bytes.NewBuffer([]byte{})
+	w.Reset()
+	err = t.ExecuteTemplate(w, k, data)
+	if err != nil {
+		log.Println("Error during template execution", err.Error())
+	}
+	Dict.pages[k].Content = w.Bytes()
+
 }

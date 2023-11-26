@@ -1,0 +1,28 @@
+{{- range .Template.Lines}}
+{{- if eq .Type 0}}{{ $length := len .Text }}
+{{- if ne $length 0 }}
+<p>{{.Text}}</p>
+{{- end}}
+{{- else if eq .Type 1}}
+{{- if .IsImage }}
+<img src="{{.Arg}}" alt="{{.Text}}" />
+{{- else}}
+<a href="{{.Arg}}">{{.Text}}</a>
+{{- end}}
+{{- else if eq .Type 2}}
+<li>{{.Text}}</li>
+{{- else if eq .Type 3}}
+<q>{{.Text}}</q>
+{{- else if eq .Type 4}}
+<h4>{{.Text}}</h4>
+{{- else if eq .Type 5}}
+<h3>{{.Text}}</h3>
+{{- else if eq .Type 6}}
+<h2>{{.Text}}</h2>
+{{- else if eq .Type 7}}{{$length := len .Text }}
+{{- if eq .PreNum 0}}
+<pre class="helper-{{.Arg}}">
+    {{- else if and (eq .PreNum 1) (ne $length 0)}}
+    {{.Text}}
+    {{- else}}</pre>
+{{- end}}{{end}}{{end}}

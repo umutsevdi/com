@@ -1,26 +1,14 @@
 package index
 
 import (
-	"fmt"
 	"strings"
 	"time"
 )
 
 type GEMTEXT int
 
-var GEMTEXT_STR []string = []string{
-	"GEMTEXT_TEXT ",
-	"GEMTEXT_LINK ",
-	"GEMTEXT_LIST ",
-	"GEMTEXT_QUOTE",
-	"GEMTEXT_H3   ",
-	"GEMTEXT_H2   ",
-	"GEMTEXT_H1   ",
-	"GEMTEXT_PRE  ",
-}
-
 const (
-	GEMTEXT_TEXT = GEMTEXT(iota)
+	GEMTEXT_TEXT = iota
 	GEMTEXT_LINK
 	GEMTEXT_LIST
 	GEMTEXT_QUOTE
@@ -31,21 +19,26 @@ const (
 )
 
 type Gemtext struct {
-	Title   string
-	Author  string
-	Created time.Time
-	Updated time.Time
-	Lines   *[]Line
+	Title        string
+	Author       string
+	Created      time.Time
+	LastModified time.Time
+	Lines        *[]Line
 }
 
 type Line struct {
-	Type GEMTEXT
-	Text string
-	Arg  string
+	Type   GEMTEXT
+	Text   string
+	Arg    string
+	PreNum int
 }
 
-func (g *Gemtext) Parse(text string) {
-	linesRaw := strings.Split(text, "\n")
+func parseGemini(v *FData) Gemtext {
+
+	var g Gemtext
+	linesRaw := strings.Split(string(v.Content), "\n")
+	g.Created = v.Created
+	g.LastModified = v.LastModified
 
 	lines := make([]Line, 0, len(linesRaw))
 	var pre bool = false
@@ -55,9 +48,10 @@ func (g *Gemtext) Parse(text string) {
 			if strings.HasPrefix(v, "```") {
 				pre = false
 				preLastHint = ""
+				lines = append(lines, Line{Type: GEMTEXT_PRE, Arg: preLastHint, Text: "", PreNum: 2})
 				continue
 			}
-			lines = append(lines, Line{Type: GEMTEXT_PRE, Arg: preLastHint, Text: v})
+			lines = append(lines, Line{Type: GEMTEXT_PRE, Arg: preLastHint, Text: v, PreNum: 1})
 			continue
 		}
 		if strings.HasPrefix(v, "//") {
@@ -65,6 +59,7 @@ func (g *Gemtext) Parse(text string) {
 		} else if strings.HasPrefix(v, "```") {
 			pre = true
 			preLastHint = strings.Split(v, " ")[0][3:]
+			lines = append(lines, Line{Type: GEMTEXT_PRE, Arg: preLastHint, Text: "", PreNum: 0})
 		} else if strings.HasPrefix(v, ">") {
 			lines = append(lines, parse(v[1:], ">"))
 		} else if strings.HasPrefix(v, "*") {
@@ -85,23 +80,29 @@ func (g *Gemtext) Parse(text string) {
 	}
 	g.Lines = &lines
 
-	for _, v := range *g.Lines {
-		fmt.Println("{LineType:"+GEMTEXT_STR[v.Type], "\tText:"+v.Text, "\tArg:"+v.Arg, "}")
-	}
-
+	return g
 }
 
 func (g *Gemtext) parseHeader(line string) {
 	s := (line)[2:]
-	sArray := strings.Split(s, "=")
+	sArray := strings.Split(s, ":")
 	if len(sArray) != 2 {
 		return
 	}
-	if sArray[0] == "Title" {
-		g.Title = sArray[1]
-	} else if sArray[0] == "Author" {
-		g.Author = sArray[1]
+	if strings.TrimSpace(sArray[0]) == "Title" {
+		g.Title = strings.TrimSpace(sArray[1])
+	} else if strings.TrimSpace(sArray[0]) == "Author" {
+		g.Author = strings.TrimSpace(sArray[1])
 	}
+}
+
+func (l *Line) IsImage() bool {
+	s := strings.ToLower(ext(l.Arg)[1:])
+	return strings.Compare(s, "png") == 0 || strings.Compare(s, "jpg") == 0 || strings.Compare(s, "jpeg") == 0
+}
+
+func (g *Gemtext) DateFmt(date time.Time) string {
+	return date.Format("15:04 Mon, 2 Jan 06")
 }
 
 func parseH(line string) Line {
@@ -131,8 +132,8 @@ func parseLink(line string) Line {
 	l := Line{Type: GEMTEXT_LINK}
 	p := strings.Split(strings.TrimSpace(line[2:]), " ")
 	if len(p) > 1 {
-		l.Arg = strings.Join(p[1:], " ")
-		l.Text = p[0]
+		l.Text = strings.Join(p[1:], " ")
+		l.Arg = p[0]
 	} else {
 		l.Arg = p[0]
 		l.Text = p[0]

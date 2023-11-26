@@ -2,6 +2,7 @@ package index
 
 import (
 	"fmt"
+	"github.com/djherbis/times"
 	"log"
 	"os"
 	"strings"
@@ -89,12 +90,17 @@ func (c *Container) defineComponents() {
 // updates only it's changed
 func mapToCache(key, path string, files *map[string]*FData) {
 	if fs, ok := (*files)[key]; ok {
-		metadata, err := os.Stat(fs.Path)
+		t, err := times.Stat(fs.Path)
 		if err != nil {
 			log.Println("WARN: File", path, "does not exist")
 			return
 		}
-		fs.LastModified = metadata.ModTime()
+		if t.HasChangeTime() {
+			fs.LastModified = t.ChangeTime()
+		}
+		if t.HasBirthTime() {
+			fs.Created = t.BirthTime()
+		}
 		fs.Content, err = os.ReadFile(fs.Path)
 		if err != nil {
 			log.Println("WARN: File", path, "does not exist for metadata")
@@ -107,16 +113,32 @@ func mapToCache(key, path string, files *map[string]*FData) {
 			log.Println("WARN: File", path, "does not exist")
 			return
 		}
-		metadata, err := os.Stat(path)
+		t, err := times.Stat(path)
 		if err != nil {
 			log.Println("WARN: File", path, "does not exist for metadata")
 			return
 		}
-		// Update only if the file is changed
-		(*files)[key] = &FData{
-			Path:         path,
-			Content:      d,
-			LastModified: metadata.ModTime(),
+		fs := FData{
+			Path:    path,
+			Content: d,
+			Type:    ext(path),
 		}
+		if t.HasChangeTime() {
+			fs.LastModified = t.ChangeTime()
+		}
+		if t.HasBirthTime() {
+			fs.Created = t.BirthTime()
+		}
+		// Update only if the file is changed
+		(*files)[key] = &fs
 	}
+}
+
+// Parses received URL and extracts it's extension
+//
+//	@param URL path to file
+//	@return string corresponding extension type in the format of .type
+func ext(url string) string {
+	p := strings.Split(url, ".")
+	return "." + p[len(p)-1]
 }

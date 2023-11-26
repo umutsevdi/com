@@ -11,27 +11,6 @@ import (
 )
 
 func main() {
-	//page := "//Title: An example title\n" +
-	//	"// Author: Umut Sevdi\n" +
-	//	"# Hello everyone\n" +
-	//	"## This is a subtitle\n" +
-	//	"###This is a joined subtitle\n" +
-	//	"This is a raw string\n" +
-	//	"=>www.google.com\n" +
-	//	"=> www.duckduckgo.com\n" +
-	//	"=> www.umutsevdi.com My Personal Site\n" +
-	//	"> Some quote\n" +
-	//	"> Some another quote\n" +
-	//	"```c\n" +
-	//	"int main(void) {\n" +
-	//	"    printf(\"Hello world\\n\");\n" +
-	//	"}\n" +
-	//	"```" +
-	//	"---" +
-	//	"Bye"
-	//var g index.Gemtext
-	//g.Parse(page)
-
 	e := echo.New()
 	e.Use(middleware.GzipWithConfig(middleware.GzipConfig{
 		Level: 5,

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{template "components/head"}}
+</head>
+
+<body>
+    {{template "components/nav"}}
+    <section class="blog" id="blog">
+        <div class="blog-header">
+            <h1>{{.Template.Title}}</h1>
+            <p class="author">Author: {{.Template.Author}}</p>
+            {{if not .Template.LastModified.IsZero }}
+            <p class="updated">Last Modified: {{.Template.DateFmt .Template.LastModified}}</p>
+            {{end}}
+            {{if not .Template.Created.IsZero }}
+            <p class="created">Created: {{.Template.DateFmt .Template.Created}}</p>
+            {{end}}
+        </div>
+        <div class="blog-content">
+            {{template "components/gmi_iter" .}}
+        </div>
+    </section>
+    {{template "components/footer" .Footer}}
+</body>

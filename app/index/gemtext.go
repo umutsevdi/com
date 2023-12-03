@@ -31,6 +31,7 @@ type Line struct {
 	Text   string
 	Arg    string
 	PreNum int
+	Index  int
 }
 
 func parseGemini(v *FData) Gemtext {
@@ -43,7 +44,7 @@ func parseGemini(v *FData) Gemtext {
 	lines := make([]Line, 0, len(linesRaw))
 	var pre bool = false
 	var preLastHint string = ""
-	for _, v := range linesRaw {
+	for i, v := range linesRaw {
 		if pre {
 			if strings.HasPrefix(v, "```") {
 				pre = false
@@ -59,7 +60,7 @@ func parseGemini(v *FData) Gemtext {
 		} else if strings.HasPrefix(v, "```") {
 			pre = true
 			preLastHint = strings.Split(v, " ")[0][3:]
-			lines = append(lines, Line{Type: GEMTEXT_PRE, Arg: preLastHint, Text: "", PreNum: 0})
+			lines = append(lines, Line{Type: GEMTEXT_PRE, Arg: preLastHint, Text: "", PreNum: 0, Index: i})
 		} else if strings.HasPrefix(v, ">") {
 			lines = append(lines, parse(v[1:], ">"))
 		} else if strings.HasPrefix(v, "*") {

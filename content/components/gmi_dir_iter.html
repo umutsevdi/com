@@ -8,7 +8,7 @@
 <p class="blog-img"><img src="{{.Arg}}" alt="{{.Text}}" />
 </p>
 {{- else}}
-<a class="link" target="_blank" href="{{.Arg}}">{{.Text}}</a>
+<a class="link" href="{{.Arg}}">{{.Text}}</a>
 {{- end}}
 {{- else if eq .Type 2}}
 <li>{{.Text}}</li>

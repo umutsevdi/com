@@ -173,6 +173,8 @@ func processTemplates() {
 	for k, v := range Dict.pages {
 		if v.Type == ".gmi" {
 			processGeminiFiles(k, v, &comp, &gemData)
+		} else if v.Type == "/.gmi" {
+			processGeminiDirectories(k, v, &comp, &gemData)
 		} else {
 			processHtmlTemplate(k, v, &comp, &pageData)
 		}
@@ -193,6 +195,26 @@ func processGeminiFiles(k string, v *FData, comp *[]string, data *GemTemplate) {
 	var w *bytes.Buffer = bytes.NewBuffer([]byte{})
 	w.Reset()
 	err = t.ExecuteTemplate(w, "components/gmi", data)
+	if err != nil {
+		log.Println("Error during template execution", err.Error())
+	}
+	Dict.pages[k].Content = w.Bytes()
+}
+
+func processGeminiDirectories(k string, v *FData, comp *[]string, data *GemTemplate) {
+	data.Template = parseGemini(v)
+	t := template.New(k)
+	var err error
+	for _, c := range *comp {
+		t, err = t.Parse(c)
+		if err != nil {
+			log.Println("error while parsing template on page", err.Error())
+			err = nil
+		}
+	}
+	var w *bytes.Buffer = bytes.NewBuffer([]byte{})
+	w.Reset()
+	err = t.ExecuteTemplate(w, "components/gmi_dir", data)
 	if err != nil {
 		log.Println("Error during template execution", err.Error())
 	}

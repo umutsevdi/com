@@ -1,12 +1,4 @@
 <header>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const navToggle = document.querySelector('.nav-toggle');
-            const nav = document.querySelector('.nav');
-            navToggle.addEventListener('click',
-                () => nav.classList.toggle('active'));
-        });
-    </script>
     <div class="header-left">
         <a href="/#">
             <img class="back-shadow" src="/static/img/favicon.jpg" />
@@ -18,7 +10,7 @@
             <ul class="back-shadow">
                 <li class="nav-item"> <a href="/#about">About</a> </li>
                 <li class="nav-item"> <a href="/#projects"> Projects</a> </li>
-                <!--                <li class="nav-item"> <a href="/blog"> Blog</a> </li> -->
+                <li class="nav-item"> <a href="/blog/"> Blog</a> </li>
                 <li class="nav-item dropdown"> <a>Services</a>
                     <ul class="back-shadow nav-sublist"> <a href="https://nc.umutsevdi.com">
                             <li class="sublist-item">Nextcloud</li>

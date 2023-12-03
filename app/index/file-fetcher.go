@@ -1,12 +1,15 @@
 package index
 
 import (
+	"bytes"
 	"fmt"
-	"github.com/djherbis/times"
 	"log"
 	"os"
 	"strings"
+	"text/template"
 	"umutsevdi/com/config"
+
+	"github.com/djherbis/times"
 )
 
 func (c *Container) indexPages() {
@@ -40,8 +43,10 @@ func indexHtml(basePath string, path string, uris *map[string]*FData) {
 	if err != nil {
 		return
 	}
+	var dKeys [][2]string
 	for _, v := range data {
 		if v.Type().IsDir() {
+			dKeys = append(dKeys, [2]string{path + v.Name() + "/", v.Name() + "/"})
 			indexHtml(basePath, path+v.Name()+"/", uris)
 		} else {
 			var key string = path + v.Name()
@@ -51,8 +56,11 @@ func indexHtml(basePath string, path string, uris *map[string]*FData) {
 				key = "/"
 			}
 			mapToCache(key, path, uris)
+			title := strings.Split(key, "/")
+			dKeys = append(dKeys, [2]string{key, title[len(title)-1]})
 		}
 	}
+	mapDirToCache(path, dKeys)
 }
 
 // Recursively traverses through the content/static directory
@@ -132,6 +140,38 @@ func mapToCache(key, path string, files *map[string]*FData) {
 		// Update only if the file is changed
 		(*files)[key] = &fs
 	}
+}
+
+type DirTemplate struct {
+	Key  string
+	Uris [][2]string
+}
+
+func mapDirToCache(key string, uris [][2]string) {
+	if key == "/" {
+		return
+	}
+	var templateString = `// Title: {{.Key}}
+// Author: Umut Sevdi
+{{range .Uris}}
+=>{{index . 0}} {{index . 1}}
+{{end}}
+`
+	var w *bytes.Buffer = bytes.NewBuffer([]byte{})
+	t, err := template.New("dir").Parse(templateString)
+
+	if err != nil {
+		log.Println("WARN: Dir index error", err)
+	}
+	t.Execute(w, DirTemplate{Key: key, Uris: uris})
+	data := FData{
+		Content: w.Bytes(),
+		Path:    key,
+		Type:    "/.gmi",
+	}
+	fmt.Println(key, string(data.Content))
+
+	Dict.pages[key] = &data
 }
 
 // Parses received URL and extracts it's extension

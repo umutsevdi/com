@@ -1,0 +1,16 @@
+<div class="toc">
+    <a href="../">Back</a>
+    <details>
+        <summary>Table of Contents</summary>
+        <div class="toc-content">
+            <a href="#"> {{.Template.Title}}
+            </a>
+            {{range .Template.Lines}}
+            {{if eq .Type 1}}
+            <li class="toc-i1"><a href="#{{.Text}}">{{.Text}}</a>
+            </li>
+            {{end}}
+            {{end}}
+            <div>
+    </details>
+</div>

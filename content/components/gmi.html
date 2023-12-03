@@ -3,23 +3,29 @@
 
 <head>
     {{template "components/head"}}
+    <link rel="stylesheet" href="/static/css/gem.css" type="text/css" media="all" />
 </head>
 
 <body>
     {{template "components/nav"}}
     <section class="blog" id="blog">
-        <div class="blog-header">
-            <h1>{{.Template.Title}}</h1>
-            <p class="author">Author: {{.Template.Author}}</p>
-            {{if not .Template.LastModified.IsZero }}
-            <p class="updated">Last Modified: {{.Template.DateFmt .Template.LastModified}}</p>
-            {{end}}
-            {{if not .Template.Created.IsZero }}
-            <p class="created">Created: {{.Template.DateFmt .Template.Created}}</p>
-            {{end}}
-        </div>
-        <div class="blog-content">
-            {{template "components/gmi_iter" .}}
+        <div class="blog-card back-shadow">
+            <h1 id="{{.Template.Title}}">{{.Template.Title}}</h1>
+            <div class="blog-head">
+                <p class="author"><b>Author:</b> {{.Template.Author}}</p>
+                {{if not .Template.LastModified.IsZero }}
+                <p class="updated"><b>Last Modified:</b> {{.Template.DateFmt .Template.LastModified}}</p>
+                {{end}}
+                {{if not .Template.Created.IsZero }}
+                <p class="created"><b>Created:</b> {{.Template.DateFmt .Template.Created}}</p>
+                {{end}}
+            </div>
+            <div class="blog-split">
+                {{template "components/gmi_details" .}}
+                <div class="blog-content">
+                    {{template "components/gmi_iter" .}}
+                </div>
+            </div>
         </div>
     </section>
     {{template "components/footer" .Footer}}

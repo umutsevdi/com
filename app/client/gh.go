@@ -2,186 +2,134 @@ package client
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"strings"
+	"time"
+
+	"github.com/umutsevdi/site/config"
 )
 
 type Repository struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Url         string `json:"url"`
+	Name        string
+	Description string
+	Url         string
 	Language    []Language
-	ImageUrl    string `json:"openGraphImageUrl"`
+	ImageUrl    string
 	DoubleSize  bool
+	Stars       int
+	Forks       int
+	License     string
+	isPinned    bool
 }
 
-var repositories [6]Repository
+var pinned [6]Repository = [6]Repository{}
+var repoList []Repository = []Repository{}
+
 var lock bool
 
 var m map[string]string
 
 func init() {
-	m = make(map[string]string)
-	m["Shell"] = "/static/img/icon/langbash.png"
-	m["C"] = "/static/img/icon/langc.png"
-	m["CSS"] = "/static/img/icon/langcss.png"
-	m["C++"] = "/static/img/icon/langcpp.png"
-	m["CMake"] = "/static/img/icon/langcmake.png"
-	m["Dockerfile"] = "/static/img/icon/langdocker.png"
-	m["Go"] = "/static/img/icon/langdocker.png"
-	m["GDScript"] = "/static/img/icon/langgodot.png"
-	m["HTML"] = "/static/img/icon/langhtml.png"
-	m["Java"] = "/static/img/icon/langjava.png"
-	m["JavaScript"] = "/static/img/icon/langjs.png"
-	m["Lua"] = "/static/img/icon/langlua.png"
-	m["Makefile"] = "/static/img/icon/langmake.png"
-	m["Perl"] = "/static/img/icon/langperl.png"
-	m["Python"] = "/static/img/icon/langpython.png"
-	m["Jupyter Notebook"] = "/static/img/icon/langpython.png"
-	m["PLpgSQL"] = "/static/img/icon/langsql.png"
-	m["TypeScript"] = "/static/img/icon/langts.png"
-	m["Vim"] = "/static/img/icon/langvim.png"
-	m["Vim Snippet"] = "/static/img/icon/langvim.png"
+	m = getLanguageMap()
+	gh := config.Github()
+	go GitHubBatch(config.User(), config.Token())
+	ticker := time.NewTicker(time.Duration(*gh.PeriodMin) * time.Minute)
+	quit := make(chan struct{})
+	go func() {
+		for {
+			select {
+			case <-ticker.C:
+				GitHubBatch(config.User(), config.Token())
+			case <-quit:
+				ticker.Stop()
+				return
+			}
+		}
+	}()
 }
 
 func GetGh() []Repository {
 	for lock {
 
 	}
-	return repositories[0:6]
+	return pinned[0:6]
 }
 
-func FetchGh(user, token string) {
+func GitHubBatch(user, token string) {
+	log.Println("Updating GitHub cache")
 	lock = true
-	buffer, err := sendRequest(user, token)
-	if err != nil {
-		log.Println("Error: Failed to fetch from Github")
-		lock = false
-		return
-	}
-	err = mapResponseToStruct(buffer)
-	if err != nil {
-		log.Println("Error: Failed to map the result from Github")
-		lock = false
-		return
-	}
-	for i, v := range repositories {
-		for j := range v.Language {
-			v.Language[j].Src = m[v.Language[j].Name]
-		}
-		repositories[i].DoubleSize = i == 1 || i == 2 || i == 5
-	}
+	sendRepoListQuery(user, token)
+	sendPinnedRepositoryQuery(user, token)
 	lock = false
+	log.Println("GitHub cached successfully")
 }
 
-func mapResponseToStruct(responseBody string) error {
-	var r response
-	err := json.Unmarshal([]byte(responseBody), &r)
+func sendRepoListQuery(user, token string) {
+	buffer, err := sendRequest(user, PINNED_QUERY, token)
 	if err != nil {
-		return err
+		log.Println("ERROR: Failed to fetch from Github")
+		lock = false
+		return
 	}
 
-	for i, v := range r.Data.User.Pinned.Edges {
-		d, _ := json.Marshal(v.Node)
-		json.Unmarshal(d, &repositories[i])
-		repositories[i].Language = make([]Language, len(v.Node.Languages.Edge))
-		for j, v := range v.Node.Languages.Edge {
-			repositories[i].Language[j] = v.Node
-		}
+	var repos pinnedRepositories
+	err = json.Unmarshal(buffer, &repos)
+	repos.setRepository(&pinned)
+
+	if err != nil {
+		log.Println("ERROR: Failed to map the result from Github.", err)
+		lock = false
+		return
 	}
-	return nil
+}
+
+func sendPinnedRepositoryQuery(user, token string) {
+	buffer, err := sendRequest(user, REPO_QUERY, token)
+	if err != nil {
+		log.Println("ERROR: Failed to fetch from Github")
+		lock = false
+		return
+	}
+
+	var repos repositoryList
+	err = json.Unmarshal(buffer, &repos)
+	repos.setRepository(&repoList)
+
+	if err != nil {
+		log.Println("ERROR: Failed to map the result from Github.", err)
+		lock = false
+		return
+	}
+
 }
 
 // Sends a Graphql Request to the GitHub API and returns the response as string
 // @param username username of the requested account
+// @param query graphql query to fetch
 // @return string response if successful
 // @return error if response is not successful
-func sendRequest(username, token string) (string, error) {
+func sendRequest(username, query, token string) ([]byte, error) {
 	URL := "https://api.github.com/graphql"
-	q := "{" +
-		"  \"query\":" +
-		"    \"query MyQuery {" +
-		"  user(login: \\\"" + username + "\\\"){" +
-		"    pinnedItems(first: 6) {" +
-		"      edges {" +
-		"        node {" +
-		"          ... on Repository {" +
-		"          name " +
-		"          url " +
-		"          languages(first: 3) { " +
-		"            edges {" +
-		"              node { " +
-		"                color " +
-		"                name" +
-		"               }" +
-		"             }" +
-		"            }" +
-		"            description" +
-		"            openGraphImageUrl" +
-		"           }" +
-		"          } " +
-		"        } " +
-		"       } " +
-		"      }" +
-		"     }\"" +
-		"}"
+	q := strings.ReplaceAll(strings.Replace(query, "__USER__", username, 1), "\n", " ")
+	q = "{\"query\": \"query " + q + "\"}"
 	req, err := http.NewRequest("POST", URL, strings.NewReader(q))
 	req.Header.Add("Authorization", "Bearer "+token)
 	req.Header.Add("Content-Type", "application/json")
 	if err != nil {
 		log.Print("client | ", err.Error())
-		return "", err
+		return nil, err
 	}
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Print("client | ", err.Error())
-		return "", err
+		return nil, err
 	}
-	bodyResp, err := ioutil.ReadAll(resp.Body)
-	defer resp.Body.Close()
-	return string(bodyResp), nil
-}
-
-type response struct {
-	Data responseData `json:"data"`
-}
-
-type responseData struct {
-	User user `json:"user"`
-}
-
-type user struct {
-	Pinned pinnedItems `json:"pinnedItems"`
-}
-
-type pinnedItems struct {
-	Edges []item `json:"edges"`
-}
-
-type item struct {
-	Node repository `json:"node"`
-}
-
-type repository struct {
-	Name        string       `json:"name"`
-	Description string       `json:"description"`
-	Url         string       `json:"url"`
-	Languages   LanguageEdge `json:"languages"`
-	ImageUrl    string       `json:"openGraphImageUrl"`
-}
-type LanguageEdge struct {
-	Edge []LanguageNode `json:"edges"`
-}
-
-type LanguageNode struct {
-	Node Language `json:"node"`
-}
-
-type Language struct {
-	Hex  string `json:"color"`
-	Name string `json:"name"`
-	Src  string
+	bodyResp, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Println("ERROR: Error during read", err)
+	}
+	return bodyResp, nil
 }

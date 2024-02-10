@@ -1,21 +1,21 @@
 :root {
-  --bg-none:        #00000000;
-  --bg:             #333333;   /* Jet */
-  --bg-pressed:     #505050;   /* Davy's Gray */
-  --bg-dark:        #131112;   /* Night */
-  --primary:        #FFCE51;   /* Sunglow */
-  --click:          #FADB8B;   /* Jasmine */
-  --fg:             #EBDBB2;   /* Dutch White */
-  --bg-semi:        #33333366; /* Jet */
+  --bg-none:  #00000000;
+  --bg:     #333333;   /* Jet */
+  --bg-pressed:   #505050;   /* Davy's Gray */
+  --bg-dark:  #131112;   /* Night */
+  --primary:  #FFCE51;   /* Sunglow */
+  --click:    #FADB8B;   /* Jasmine */
+  --fg:     #EBDBB2;   /* Dutch White */
+  --bg-semi:  #33333366; /* Jet */
   --bg-pressed-semi:#50505066; /* Davy's Gray */
   --bg-dark-semi:   #13111266; /* Night */
-  --pri-semi:       #FFCE5166; /* Sunglow */
-  --click-semi:     #FADB8B66; /* Jasmine */
-  --fg-semi:        #EBDBB266; /* Dutch White */
+  --pri-semi:   #FFCE5166; /* Sunglow */
+  --click-semi:   #FADB8B66; /* Jasmine */
+  --fg-semi:  #EBDBB266; /* Dutch White */
 }
 
 /*******************************************************************************
- *              Common CSS Settings
+ *    Common CSS Settings
  ******************************************************************************/
 *::before,
 *::after {
@@ -113,7 +113,7 @@ li {
 }
 
 /*******************************************************************************
- *                Home Section
+ *    Home Section
  ******************************************************************************/
 .home {
    min-height: 95vh;
@@ -247,7 +247,7 @@ li {
 }
 
 /*******************************************************************************
- *                About
+ *    About
  ******************************************************************************/
 
 .section {
@@ -309,9 +309,11 @@ li {
 }
 
 .projects > div {
-  align-self: center;
   max-width: 85%;
   margin: 0rem auto 0rem;
+  align-self: center;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 @media only screen and (max-width: 600px) {
@@ -324,10 +326,10 @@ li {
 
 .project-list {
   text-decoration: none;
-  align-items: center;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
   padding-left: 0;
+  margin: auto auto;
 }
 
 .project-item-double-size {
@@ -340,6 +342,7 @@ li {
   transition: 0.2s;
   margin: 1rem;
   background: var(--bg-dark);
+  align-items: center;
 }
 
 .project-list > li:hover {
@@ -348,20 +351,19 @@ li {
   margin: 0.9rem 0.3rem;
 }
 
+.project-box {
+  text-align: center;
+}
+
 .project-box > h2 {
   color: var(--click);
   font-weight: bold;
   transition: 0.15s;
-/*   border-bottom: 0.1rem solid var(--fg); */
 }
 
 .project-box:hover > h2 {
   color: var(--primary);
   transition: 0.15s;
-}
-
-.project-box {
-  text-indent: 2rem;
 }
 
 .project-desc {
@@ -372,11 +374,6 @@ li {
   margin: 0 1rem;
 }
 
-.project-icon-block {
-  padding-top: 2rem;
-  padding-right: 2rem;
-}
-
 .project-icon-block > img {
   display: inline;
   width: 1.5rem;
@@ -384,14 +381,16 @@ li {
 
 @media only screen and (max-width: 600px) {
   .project-icon-block > img {
-    display: inline;
-    margin: 0rem;
+  display: inline;
+  margin: 0rem;
   }
   .project-list {
-    display: block;
+  display: block;
+  max-width: 100%;
+  margin: auto 0;
   }
   .project-box {
-    width: 100%;
+  width: 100%;
   }
 }
 
@@ -427,8 +426,8 @@ li {
 
 @media only screen and (max-width: 600px) {
   .resume-card {
-    margin: 0 2%;
-    padding: 0.5rem;
+  margin: 0 2%;
+  padding: 0.5rem;
   }
 }
 
@@ -479,7 +478,7 @@ li {
 }
 
 /*******************************************************************************
- *                Not Found Section
+                *    Not Found Section
  ******************************************************************************/
 .not-found {
   height: 100vh;

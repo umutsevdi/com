@@ -19,9 +19,9 @@
 .toc {
    min-width: 10rem;
    position: sticky;
-   top: 10vch;
-   min-height: 90vh;
-   overflow-y: auto;
+   top: 10vh;
+   height: 90vh;
+   overflow-y: visible;
    justify-items: center;
 }
 
@@ -96,6 +96,7 @@
 .blog-card {
   padding: 1rem 2rem;
   margin: 2rem 20%;
+  min-width: 50%;
   background-color:  var(--bg);
   border-radius: 1rem;
   justify-content: center;
@@ -104,9 +105,9 @@
 
 @media only screen and (max-width: 600px) {
   .blog-card {
-    margin: 0 5rem;
-    margin-top: 4rem;
-    max-width: 90%;
+    margin: 2rem 5rem;
+    min-width: 90%;
+    min-height: 80vh;
     background-color: var(--bg);
     border-radius: 1rem;
   }
@@ -114,7 +115,7 @@
      width:  100%;
      position: unset;
      top: unset;
-     min-height: unset;
+     height: unset;
      align-items: center;
   }
   .toc > a {

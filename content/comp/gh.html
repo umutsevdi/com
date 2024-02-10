@@ -3,13 +3,12 @@
     <li class="{{if .DoubleSize}}project-item-double-size{{end}} back-shadow">
         <a class="project-box" target="_blank" href="{{.Url}}">
             <h2>{{.Name}}</h2>
-            <p class="project-desc">{{.Description}}</p>
-
             <p class="project-icon-block">
                 {{range .Language}}
                 <img src="{{.Src}}" alt="{{.Name}}">
                 {{end}}
             </p>
+            <p class="project-desc">{{.Description}}</p>
         </a>
     </li>
     {{end}}

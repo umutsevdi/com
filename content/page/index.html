@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-    {{template "components/head"}}
+    {{template "/comp/head"}}
 </head>
 
 <body>
-    {{template "components/nav"}}
+    {{template "/comp/nav"}}
 
     <section class="intro" id="home">
         <div class="home">
@@ -31,8 +31,7 @@
                     </a>
                 </div>
                 <div class="home-social home-social-last">
-                    <a rel="me" target="_blank" href="https://mastodon.social/@chinstrap"
-                        class="social-button back-shadow">
+                    <a rel="me" target="_blank" href="https://mas.to/@umutsevdi" class="social-button back-shadow">
                         <img src="/static/img/icon/mastodon-60.png" alt="Mastodon">
                     </a>
                 </div>
@@ -73,7 +72,8 @@
             <ul class="point-list">
                 <li>A smartwatch with touchscreen from scratch using Raspberry Pi Pico in C programming language</li>
                 <li> Brauzer, a graphical web browser that supports variety of alternative web protocols such as Gemini,
-                    Gopher and HTTP/HTTPS. </li> </ul>
+                    Gopher and HTTP/HTTPS. </li>
+            </ul>
             <h2>## Goals</h2>
             <ul class="point-list">
                 <li>Study more on C and C++, build more projects with it. </li>
@@ -85,14 +85,12 @@
     <section id="projects" class="projects-image">
         <div class="section projects">
             <div class="section">
-                <div>
-                    <h1 align="center">Projects</h1>
-                    {{template "components/gh" .Repositories}}
-                </div>
+                <h1 align="center">Projects</h1>
+                {{template "/comp/gh" .Repositories}}
             </div>
         </div>
     </section>
-    {{template "components/footer" .Footer}}
+    {{template "/comp/footer" .Footer}}
 </body>
 
 </html>

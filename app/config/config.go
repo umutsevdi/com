@@ -1,14 +1,5 @@
 package config
 
-/******************************************************************************
-
- * File: util/config.go
- *
- * Author: Umut Sevdi
- * Created: 07/04/23
- * Description:Configuration parsing utilities.
-
-*****************************************************************************/
 import (
 	"encoding/json"
 	"log"
@@ -16,40 +7,35 @@ import (
 )
 
 var (
-	D_URI             string = ""
-	D_PORT            uint64 = 8080
-	D_API_PORT        uint64 = 8081
-	D_CACHE           bool   = false
-	D_CACHE_VALID_TTL bool   = true
-	C                 Config = Config{}
+	DEFAULT_URI           string = ""
+	DEFAULT_DIR           string = "content"
+	DEFAULT_PORT          uint64 = 8080
+	DEFAULT_PERIOD_MINUTE int    = 30
+	DEFAULT_WATCH_SEC     uint64 = 1
 )
 
-type Cache struct {
-	Enabled *bool  `json:"enabled,omitempty"`
-	Ttl     uint64 `json:"ttl,omitempty"`
+var instance Config
+
+type GitHubConfig struct {
+	User      *string `json:"user,omitempty"`
+	Token     *string `json:"token,omitempty"`
+	PeriodMin *uint64 `json:"periodMin,omitempty"`
 }
 
 type Config struct {
-	// URI of the website, will be used while generating sitemaps.xml
 	URI *string `json:"uri,omitempty"`
 	// Port to launch the application
 	Port *uint64 `json:"port,omitempty"`
-	// Periodic page indexing
-	PIndexing *Cache `json:"page,omitempty"`
-	// Will be deprecated
-	StaticCache *Cache `json:"static,omitempty"`
-	// Caching of filled templates for different users.
-	MemoryCache *Cache `json:"memory,omitempty"` //
 	// Path to pages static and components directories
-	ContentPath *string `json:"content,omitempty"`
-	// Github data
-	User  *string
-	Token *string
+	ContentDir *string       `json:"directory,omitempty"`
+	Github     *GitHubConfig `json:"github,omitempty"`
+	WatchSec   *uint64       `json:"watchSec"`
 }
 
 // Parses the configuration file at $WEBWATCH_CONFIG or config.json file
 // whichever is available.
 func init() {
+	log.Println("initializing config")
 	path, found := os.LookupEnv("WEBWATCH_CONFIG")
 	if !found || path == "" {
 		path = "config.json"
@@ -61,53 +47,52 @@ func init() {
 			"$WEBWATCH_CONFIG.")
 	}
 
-	json.Unmarshal(file, &C)
+	err = json.Unmarshal(file, &instance)
+	if err != nil {
+		log.Fatal("ERROR: JSON parse", file, ".", err.Error())
+	}
+
 	fillEmptyFields()
 	log.Println("Server has been started with following configurations:",
-		"\n- target:           ", *C.URI, ":", *C.Port,
-		"\n- periodicIndexing: {enabled: ", *C.PIndexing.Enabled, ", ttl: ", C.PIndexing.Ttl, "}",
-		"\n- staticCache:      {enabled: ", *C.StaticCache.Enabled, ", ttl: ", C.StaticCache.Ttl, "}",
-		"\n- memoryCache:      {enabled: ", *C.MemoryCache.Enabled, ", ttl: ", C.MemoryCache.Ttl, "}",
-		"\n- github:           {User   : ", *C.User, ", Token: ", len(*C.Token), "}",
+		"\n- Target:           ", *instance.URI, ":", *instance.Port,
+		"\n- HotReload:        ", *instance.WatchSec, "sec",
+		"\n- GitHub:           {User   : ", *instance.Github.User, ", Cache: ", *instance.Github.PeriodMin, "min }",
 	)
+
 }
 
 // Sanitizes the invalid inputs from the configuration file.
 func fillEmptyFields() {
-	if C.URI == nil {
-		log.Println("WARN: \"uri\" is not defined at configuration. Continuing with localhost")
-		C.URI = &D_URI
+	if instance.URI == nil {
+		log.Println("WARN: \"uri\" is not defined at configuration. Continuing with", DEFAULT_URI)
+		instance.URI = &DEFAULT_URI
 	}
-	if C.Port == nil {
-		log.Println("WARN : \"port\" is not defined. Continuing with 8080.")
-		C.Port = &D_PORT
+	if instance.Port == nil {
+		log.Println("WARN : \"port\" is not defined. Continuing with", DEFAULT_PORT)
+		instance.Port = &DEFAULT_PORT
 	}
-	if C.StaticCache == nil {
-		C.StaticCache = &Cache{}
-		C.StaticCache.Enabled = &D_CACHE
-	} else if C.StaticCache.Ttl > 0 {
-		C.StaticCache.Enabled = &D_CACHE_VALID_TTL
+	if instance.ContentDir == nil {
+		log.Println("WARN : \"directory\" is not defined. Defaulting to", DEFAULT_DIR)
+		*instance.ContentDir = "content"
 	}
-	if C.PIndexing == nil {
-		C.PIndexing = &Cache{}
-		C.PIndexing.Enabled = &D_CACHE
-	} else if C.PIndexing.Ttl > 0 {
-		C.PIndexing.Enabled = &D_CACHE_VALID_TTL
+	if instance.Github == nil || instance.Github.Token == nil || instance.Github.User == nil {
+		log.Fatal("ERROR : \"github\" is not properly defined.")
 	}
-	if C.MemoryCache == nil {
-		C.MemoryCache = &Cache{}
-		C.MemoryCache.Enabled = &D_CACHE
-	} else if C.MemoryCache.Ttl > 0 {
-		C.MemoryCache.Enabled = &D_CACHE_VALID_TTL
+	if instance.Github.PeriodMin == nil {
+		log.Println("WARN : \"github.periodMin\" is not defined. Defaulting to", DEFAULT_PERIOD_MINUTE)
+		*instance.Github.PeriodMin = uint64(DEFAULT_PERIOD_MINUTE)
 	}
-	if C.ContentPath == nil {
-		log.Println("WARN : \"port\" is not defined. Defaulting to 8080.")
-		*C.ContentPath = "content"
-	}
-	if C.User == nil {
-		log.Fatal("ERROR: \"User\" is not defined at configuration.")
-	}
-	if C.Token == nil {
-		log.Fatal("ERROR: \"Token\" is not defined at configuration.")
+	if instance.WatchSec == nil {
+		log.Println("WARN : \"WatchSec\" is not defined. Defaulting to", DEFAULT_WATCH_SEC)
+		instance.WatchSec = &DEFAULT_WATCH_SEC
 	}
 }
+
+func ContentDirectory() string { return *instance.ContentDir }
+func Port() int                { return int(*instance.Port) }
+func URI() string              { return *instance.URI }
+func Github() GitHubConfig     { return *instance.Github }
+func User() string             { return *instance.Github.User }
+func Token() string            { return *instance.Github.Token }
+func Period() int              { return int(*instance.Github.PeriodMin) }
+func WatchSecond() int         { return int(*instance.WatchSec) }

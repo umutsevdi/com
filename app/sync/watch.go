@@ -20,18 +20,26 @@ type Cache struct {
 	Static    map[string]FileCache
 	Page      map[string]FileCache
 	Component map[string]FileCache
-	Ready     bool
 }
 
+// Singleton object that stores the caches
 var instance Cache
+
+// Whether access to the cache is locked or not
 var lock bool
 
+// Whether the cache is initialiced
+var ready bool
+
+// An enumerator to access the related cache
 const (
 	STATIC = iota
 	PAGE
 	COMPONENT
 )
 
+// Returns the cache if exists.
+// Waits for the lock when cache is locked
 func Get(cache int, key string) *FileCache {
 	for lock {
 
@@ -53,6 +61,8 @@ func Get(cache int, key string) *FileCache {
 	return nil
 }
 
+// Iterates over each item in the related cache
+// Waits for the lock when cache is locked
 func Each(cache int, function func(k string, data FileCache)) {
 	for lock {
 
@@ -74,12 +84,13 @@ func Each(cache int, function func(k string, data FileCache)) {
 }
 
 func init() {
-	instance.Ready = false
+	ready = false
 	log.Println("initializing file watcher")
 	validateDirectory()
 	go startWatcher()
 }
 
+// Initializes a watcher that tracks all files under the config#ContentDirectory
 func startWatcher() *watcher.Watcher {
 	w := watcher.New()
 	w.FilterOps(watcher.Rename, watcher.Move, watcher.Write, watcher.Create, watcher.Remove)
@@ -96,13 +107,15 @@ func startWatcher() *watcher.Watcher {
 	}
 	go onWatchEvent(w)
 	log.Println("Watcher started successfully")
-	instance.Ready = true
+	ready = true
 	if err := w.Start(time.Second * (time.Duration(config.WatchSecond()))); err != nil {
 		log.Fatalln(err)
 	}
 	return w
 }
 
+// A channel handler that updates the cache anytime the file or the directory is updated.
+// Restarts the watcher when a file is removed, or added
 func onWatchEvent(w *watcher.Watcher) {
 	for {
 		select {
@@ -126,6 +139,7 @@ func onWatchEvent(w *watcher.Watcher) {
 	}
 }
 
+// Clears the cache
 func clearMap() {
 	for k := range instance.Static {
 		delete(instance.Static, k)
@@ -138,6 +152,7 @@ func clearMap() {
 	}
 }
 
+// Locks the cache, reloads all items from the file system.
 func cacheTransactional(path string) {
 	lock = true
 	if strings.Index(path, "static") == 1 {
@@ -160,6 +175,7 @@ func cacheTransactional(path string) {
 	lock = false
 }
 
+// Caches a single file to the desired map
 func cacheFile(key string, path string, mapPtr map[string]FileCache) {
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -168,4 +184,5 @@ func cacheFile(key string, path string, mapPtr map[string]FileCache) {
 	mapPtr[key] = FileCache{Data: data, Path: path}
 }
 
-func IsReady() bool { return instance.Ready }
+// Is map initialized
+func IsReady() bool { return ready }

@@ -12,13 +12,7 @@ import (
 	"github.com/umutsevdi/site/config"
 )
 
-type PageTemplate struct {
-	Repositories []client.Repository
-	Footer       struct {
-		Year int
-	}
-}
-
+// Wraps a component with is name to define the template
 func wrapComponent(key string) {
 	comp := instance.Component[key]
 	comp.Data = []byte(fmt.Sprintf("{{define \"%s\"}}\n%s{{end}}",
@@ -26,6 +20,8 @@ func wrapComponent(key string) {
 	instance.Component[key] = comp
 }
 
+// Checks whether the folder structure fulfills  the requirements. Exits on
+// error
 func validateDirectory() {
 	file, err := os.Open(config.ContentDirectory())
 	if err != nil {
@@ -47,14 +43,11 @@ func validateDirectory() {
 	}
 }
 
-func Data() PageTemplate {
-	return PageTemplate{
-		Repositories: client.GetGh(),
-		Footer:       struct{ Year int }{Year: time.Now().Year()},
-	}
-}
-
-func ResolvePage(path string, content *FileCache) []byte {
+// Processes the template on the given path, inserts the predefined templates and
+// fills the data
+//
+// returns final page as byte array
+func ProcessTemplates(path string, content *FileCache, data interface{}) []byte {
 	t, err := template.New(path).Parse(string(content.Data))
 	if err != nil {
 		log.Println("error while parsing template on page", err.Error())
@@ -69,6 +62,21 @@ func ResolvePage(path string, content *FileCache) []byte {
 	}
 	var w *bytes.Buffer = bytes.NewBuffer([]byte{})
 	w.Reset()
-	err = t.ExecuteTemplate(w, path, Data())
+	err = t.ExecuteTemplate(w, path, data)
 	return w.Bytes()
+}
+
+type PageTemplate struct {
+	Repositories []client.Repository
+	Footer       struct {
+		Year int
+	}
+}
+
+// Temporary structure and its getter function that stores the data to generate index.html
+func Data() PageTemplate {
+	return PageTemplate{
+		Repositories: client.GetGh(),
+		Footer:       struct{ Year int }{Year: time.Now().Year()},
+	}
 }

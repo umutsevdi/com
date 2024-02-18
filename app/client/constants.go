@@ -7,31 +7,31 @@ import (
 
 func getLanguageMap() map[string]string {
 	m = make(map[string]string)
-	m["Shell"] = "/static/img/icon/langbash.png"
-	m["C"] = "/static/img/icon/langc.png"
-	m["CSS"] = "/static/img/icon/langcss.png"
-	m["C++"] = "/static/img/icon/langcpp.png"
-	m["CMake"] = "/static/img/icon/langcmake.png"
-	m["Dockerfile"] = "/static/img/icon/langdocker.png"
-	m["Go"] = "/static/img/icon/langdocker.png"
-	m["GDScript"] = "/static/img/icon/langgodot.png"
-	m["HTML"] = "/static/img/icon/langhtml.png"
-	m["Java"] = "/static/img/icon/langjava.png"
-	m["JavaScript"] = "/static/img/icon/langjs.png"
-	m["Lua"] = "/static/img/icon/langlua.png"
-	m["Makefile"] = "/static/img/icon/langmake.png"
-	m["Perl"] = "/static/img/icon/langperl.png"
-	m["Python"] = "/static/img/icon/langpython.png"
-	m["Jupyter Notebook"] = "/static/img/icon/langpython.png"
-	m["PLpgSQL"] = "/static/img/icon/langsql.png"
-	m["TypeScript"] = "/static/img/icon/langts.png"
-	m["Vim"] = "/static/img/icon/langvim.png"
-	m["Vim Snippet"] = "/static/img/icon/langvim.png"
+	m["Shell"] = "/static/img/icon/lang/bash.png"
+	m["C"] = "/static/img/icon/lang/c.png"
+	m["CSS"] = "/static/img/icon/lang/css.png"
+	m["C++"] = "/static/img/icon/lang/cpp.png"
+	m["CMake"] = "/static/img/icon/lang/cmake.png"
+	m["Dart"] = "/static/img/icon/lang/dart.png"
+	m["Dockerfile"] = "/static/img/icon/lang/docker.png"
+	m["Go"] = "/static/img/icon/lang/go.png"
+	m["GDScript"] = "/static/img/icon/lang/godot.png"
+	m["HTML"] = "/static/img/icon/lang/html.png"
+	m["Java"] = "/static/img/icon/lang/java.png"
+	m["JavaScript"] = "/static/img/icon/lang/js.png"
+	m["Lua"] = "/static/img/icon/lang/lua.png"
+	m["Makefile"] = "/static/img/icon/lang/make.png"
+	m["Perl"] = "/static/img/icon/lang/perl.png"
+	m["Python"] = "/static/img/icon/lang/python.png"
+	m["Jupyter Notebook"] = "/static/img/icon/lang/python.png"
+	m["PLpgSQL"] = "/static/img/icon/lang/sql.png"
+	m["TypeScript"] = "/static/img/icon/lang/ts.png"
+	m["Vim"] = "/static/img/icon/lang/vim.png"
+	m["Vim Snippet"] = "/static/img/icon/lang/vim.png"
 	return m
 }
 
 type Language struct {
-	Hex  string `json:"color"`
 	Name string `json:"name"`
 	Src  string
 }
@@ -47,11 +47,11 @@ const PINNED_QUERY = `{
           stargazerCount
           forkCount
           licenseInfo {
+            name
             nickname
           }
           languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {
             nodes {
-              color
               name
             }
           }
@@ -76,6 +76,7 @@ type pinnedRepositories struct {
 					} `json:"languages"`
 					LicenseInfo struct {
 						Nickname string `json:"nickname"`
+						Name     string `json:"name"`
 					} `json:"licenseInfo"`
 				} `json:"nodes"`
 			} `json:"pinnedItems"`
@@ -93,12 +94,11 @@ func (p *pinnedRepositories) setRepository(r *[6]Repository) {
 			License:     v.LicenseInfo.Nickname,
 			Language:    make([]Language, len(v.Languages.Nodes)),
 		}
+		if v.LicenseInfo.Nickname == "" {
+			r[i].License = v.LicenseInfo.Name
+		}
 		for j, v := range v.Languages.Nodes {
-			r[i].Language[j] = Language{
-				Src:  m[v.Name],
-				Name: v.Name,
-				Hex:  v.Hex,
-			}
+			r[i].Language[j] = Language{Src: m[v.Name], Name: v.Name}
 		}
 		names := []string{}
 		for _, v := range strings.Split(v.Name, "-") {
@@ -123,7 +123,11 @@ const REPO_QUERY = `{
         stargazerCount
         forkCount
         licenseInfo {
+          name
           nickname
+        }
+        primaryLanguage {
+          name
         }
       }
     }
@@ -142,7 +146,11 @@ type repositoryList struct {
 					Forks       int    `json:"forkCount"`
 					LicenseInfo struct {
 						Nickname string `json:"nickname"`
+						Name     string `json:"name"`
 					} `json:"licenseInfo"`
+					Language struct {
+						Name string `json:"name"`
+					} `json:"primaryLanguage"`
 				} `json:"nodes"`
 			} `json:"repositories"`
 		} `json:"user"`
@@ -155,10 +163,15 @@ func (p *repositoryList) setRepository(r *[]Repository) {
 		repo := Repository{
 			Description: v.Description,
 			Url:         v.Url,
+			License:     v.LicenseInfo.Nickname,
 			Stars:       v.Stars,
 			Forks:       v.Forks,
-			License:     v.LicenseInfo.Nickname,
+			Language:    []Language{{Name: v.Language.Name, Src: m[v.Language.Name]}},
 		}
+		if v.LicenseInfo.Nickname == "" {
+			repo.License = v.LicenseInfo.Name
+		}
+
 		names := []string{}
 		for _, v := range strings.Split(v.Name, "-") {
 			names = append(names, strings.ToUpper(v[:1])+v[1:])

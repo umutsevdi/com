@@ -407,11 +407,6 @@ section>article>h2 {
     margin: 1.5rem 0.8rem;
 }
 
-.project-pinned-icon>img {
-    display: inline;
-    width: 1.5rem;
-}
-
 .project-info {
     display: flex;
     justify-content: space-evenly;
@@ -420,6 +415,13 @@ section>article>h2 {
 
 .project-info>div {
     display: flex;
+}
+
+.project-info>div>img,
+.project-info>p>img {
+    display: inline;
+    width: 1.5rem;
+    height: 1.5rem;
 }
 
 .project-license {
@@ -458,7 +460,7 @@ section>article>h2 {
     display: flex;
     overflow: hidden;
     margin: 0 1.2rem;
-    margin-bottom: 2rem;
+    padding-bottom: 2rem;
 }
 
 .project-drawer>summary {
@@ -548,7 +550,7 @@ section>article>h2 {
     font-size: 1.1rem;
 }
 
-.project-others>p {
+.project-desc-others {
     font-size: 0.8rem;
     color: var(--fg);
     font-family: 'IBMPlexMono', monospace;
@@ -570,7 +572,7 @@ section>article>h2 {
     border-radius: 0.3rem;
     margin: 2.5rem;
     padding: 0.5rem;
-    height: 87vh;
+    height: 88vh;
     width: 65%;
 }
 

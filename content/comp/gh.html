@@ -8,17 +8,17 @@
                     <img src="/static/img/icon/project-star.png">
                     <p>{{.Stars}}</p>
                 </div>
-                <p class="project-license">{{.License}}</p>
+                <p>
+                    {{range .Language}}
+                    <img src="{{.Src}}" alt="{{.Name}}">
+                    {{end}}
+                </p>
                 <div>
                     <img src="/static/img/icon/project-fork.png">
                     <p>{{.Forks}}</p>
                 </div>
             </div>
-            <p class="project-pinned-icon">
-                {{range .Language}}
-                <img src="{{.Src}}" alt="{{.Name}}">
-                {{end}}
-            </p>
+            <p class="project-license">{{.License}}</p>
             <p class="project-desc">{{.Description}}</p>
         </a>
     </li>
@@ -41,13 +41,18 @@
                             <img src="/static/img/icon/project-star.png" height="70%">
                             <p>{{.Stars}}</p>
                         </div>
-                        <p class="project-license">{{.License}}</p>
+                        <p>
+                            {{range .Language}}
+                            <img src="{{.Src}}" alt="{{.Name}}">
+                            {{end}}
+                        </p>
                         <div>
                             <img src="/static/img/icon/project-fork.png" height="70%">
                             <p>{{.Forks}}</p>
                         </div>
                     </div>
-                    <p class="project-desc">{{.Description}}</p>
+                    <p class="project-license">{{.License}}</p>
+                    <p class="project-desc-others">{{.Description}}</p>
                 </a>
             </li>
             {{end}}

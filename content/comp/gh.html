@@ -25,6 +25,11 @@
     {{end}}
 </ul>
 <details id="project-drawer" class="project-drawer">
+    <summary>
+        <img id="project-drawer-img-up" class="hidden" src="/static/img/icon/arrow-up.png">
+        <img id="project-drawer-img-down" src="/static/img/icon/arrow-down.png">
+        <p id="project-drawer-summary">Show More</p>
+    </summary>
     <article>
         <ul class="project-list">
             {{range .Repositories}}
@@ -48,7 +53,4 @@
             {{end}}
         </ul>
     </article>
-    <summary><img id="project-drawer-img" src="/static/img/icon/arrow-down.png">
-        <p id="project-drawer-summary">Show More</p>
-    </summary>
 </details>

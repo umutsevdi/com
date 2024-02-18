@@ -9,7 +9,7 @@
     {{template "/comp/nav"}}
 
     <section class="landing" id="home">
-        <div class="home-card back-shadow">
+        <article class="home-card back-shadow">
             <div class="home-img ">
                 <img class="back-shadow" src="/static/img/profile.jpg" alt="Profile picture of Umut" />
             </div>
@@ -39,11 +39,11 @@
                     <p> Resume </p>
                 </div>
             </a>
-        </div>
+        </article>
     </section>
     <!-- About -->
     <section id="about" class="about">
-        <div class="about-text">
+        <article class="about-text">
             <h1 align="center">About Me</h1>
             <p>
                 Hi, I'm Umut. I'm a software engineer located in Istanbul, Turkey. I'm currently working at
@@ -76,13 +76,13 @@
                 <li> Work on open source projects, contribute to them. </li>
                 <li> Learn and build applications with GTK. </li>
             </ul>
-        </div>
+        </article>
     </section>
     <section id="projects" class="projects">
-        <div>
+        <article>
             <h1 align="center">Projects</h1>
             {{template "/comp/gh" .}}
-        </div>
+        </article>
     </section>
     {{template "/comp/footer" .Footer}}
 </body>

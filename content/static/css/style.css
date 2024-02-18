@@ -142,11 +142,11 @@ section {
     width: 100%;
 }
 
-section>div>p {
+section>article>p {
     padding: 1.5rem 0;
 }
 
-section>div>h1 {
+section>article>h1 {
     font-size: 3rem;
     font-weight: lighter;
     border-bottom-width: 0.2rem;
@@ -154,19 +154,22 @@ section>div>h1 {
     border-bottom-style: solid;
 }
 
-section>div>h2 {
+section>article>h2 {
     font-size: 1.7rem;
     font-family: 'IBMPlexMono', monospace;
     font-weight: bold;
 }
 
+.hidden {
+    display: none;
+}
 
 /*******************************************************************************
  *    Home Section
  ******************************************************************************/
 
 .landing {
-    min-height: 95vh;
+    min-height: 90vh;
     background-image: url(/static/img/landing-page.jpeg);
     background-position: center;
     background-size: cover;
@@ -340,10 +343,9 @@ section>div>h2 {
     background: linear-gradient(var(--bg), var(--bg-semi), var(--bg-dark)), url(/static/img/landing-page.jpeg);
     background-size: cover;
     height: 100%;
-
 }
 
-.projects>div {
+.projects>article {
     max-width: 85%;
     margin: 0rem auto 0rem;
     align-self: center;
@@ -352,7 +354,7 @@ section>div>h2 {
 }
 
 @media only screen and (max-width: 600px) {
-    .projects>div {
+    .projects>article {
         margin: 0rem auto 0rem;
     }
 }
@@ -448,7 +450,6 @@ section>div>h2 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(25%, 2fr));
     padding-left: 0;
-    margin: auto auto;
 }
 
 .project-drawer {
@@ -456,6 +457,8 @@ section>div>h2 {
     justify-content: space-around;
     display: flex;
     overflow: hidden;
+    margin: 0 1.2rem;
+    margin-bottom: 2rem;
 }
 
 .project-drawer>summary {
@@ -464,7 +467,9 @@ section>div>h2 {
     align-items: center;
     padding: 10px;
     font-weight: bold;
-    width: 100%;
+    margin: 0 auto;
+    width: 50%;
+    justify-content: center;
 }
 
 .project-drawer>summary::-webkit-details-marker {
@@ -480,13 +485,24 @@ section>div>h2 {
 }
 
 .project-drawer>summary>img {
-    transition: transform 0.6s ease-in-out;
     margin: 0 2rem;
     width: 1rem;
 }
 
-.project-drawer-animation {
-    transform: rotate(180deg);
+.project-drawer>summary:hover>img {
+    animation: upDownAnimation 1s infinite ease-in-out;
+}
+
+@keyframes upDownAnimation {
+
+    0%,
+    100% {
+        transform: translateY(0.3rem);
+    }
+
+    50% {
+        transform: translateY(-0.3rem);
+    }
 }
 
 .project-drawer[open]>article {

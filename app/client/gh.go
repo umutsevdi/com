@@ -16,8 +16,6 @@ type Repository struct {
 	Description string
 	Url         string
 	Language    []Language
-	ImageUrl    string
-	DoubleSize  bool
 	Stars       int
 	Forks       int
 	License     string
@@ -50,23 +48,23 @@ func init() {
 	}()
 }
 
-func GetGh() []Repository {
+func GetGh() ([]Repository, []Repository) {
 	for lock {
 
 	}
-	return pinned[0:6]
+	return pinned[0:6], repoList
 }
 
 func GitHubBatch(user, token string) {
 	log.Println("Updating GitHub cache")
 	lock = true
-	sendRepoListQuery(user, token)
 	sendPinnedRepositoryQuery(user, token)
+	sendRepoListQuery(user, token)
 	lock = false
 	log.Println("GitHub cached successfully")
 }
 
-func sendRepoListQuery(user, token string) {
+func sendPinnedRepositoryQuery(user, token string) {
 	buffer, err := sendRequest(user, PINNED_QUERY, token)
 	if err != nil {
 		log.Println("ERROR: Failed to fetch from Github")
@@ -85,7 +83,7 @@ func sendRepoListQuery(user, token string) {
 	}
 }
 
-func sendPinnedRepositoryQuery(user, token string) {
+func sendRepoListQuery(user, token string) {
 	buffer, err := sendRequest(user, REPO_QUERY, token)
 	if err != nil {
 		log.Println("ERROR: Failed to fetch from Github")

@@ -1,9 +1,20 @@
-<ul class="project-list">
-    {{range .}}
-    <li class="{{if .DoubleSize}}project-item-double-size{{end}} back-shadow">
+<ul class="project-list-pinned">
+    {{range .Pinned}}
+    <li class="back-shadow">
         <a class="project-box" target="_blank" href="{{.Url}}">
             <h2>{{.Name}}</h2>
-            <p class="project-icon-block">
+            <div class="project-info">
+                <div>
+                    <img src="/static/img/icon/project-star.png">
+                    <p>{{.Stars}}</p>
+                </div>
+                <p class="project-license">{{.License}}</p>
+                <div>
+                    <img src="/static/img/icon/project-fork.png">
+                    <p>{{.Forks}}</p>
+                </div>
+            </div>
+            <p class="project-pinned-icon">
                 {{range .Language}}
                 <img src="{{.Src}}" alt="{{.Name}}">
                 {{end}}
@@ -13,3 +24,31 @@
     </li>
     {{end}}
 </ul>
+<details id="project-drawer" class="project-drawer">
+    <article>
+        <ul class="project-list">
+            {{range .Repositories}}
+            <li class="back-shadow">
+                <a class="project-box project-others" target="_blank" href="{{.Url}}">
+                    <h2>{{.Name}}</h2>
+                    <div class="project-info">
+                        <div>
+                            <img src="/static/img/icon/project-star.png" height="70%">
+                            <p>{{.Stars}}</p>
+                        </div>
+                        <p class="project-license">{{.License}}</p>
+                        <div>
+                            <img src="/static/img/icon/project-fork.png" height="70%">
+                            <p>{{.Forks}}</p>
+                        </div>
+                    </div>
+                    <p class="project-desc">{{.Description}}</p>
+                </a>
+            </li>
+            {{end}}
+        </ul>
+    </article>
+    <summary><img id="project-drawer-img" src="/static/img/icon/arrow-down.png">
+        <p id="project-drawer-summary">Show More</p>
+    </summary>
+</details>

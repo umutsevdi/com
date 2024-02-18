@@ -314,7 +314,11 @@ section>div>h2 {
     margin: 0rem auto 0rem;
 }
 
-.about-text>ul {
+.about-text>p {
+    margin: 0 1rem;
+}
+
+.point-list {
     padding: 0 2rem;
 }
 
@@ -355,29 +359,6 @@ section>div>h2 {
 
 /* Project Cards */
 
-.project-list {
-    text-decoration: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
-    padding-left: 0;
-    margin: auto auto;
-}
-
-.project-list>li {
-    border: 0.2rem solid var(--fg);
-    border-radius: 0.3rem;
-    transition: 0.2s;
-    margin: 1rem;
-    background: var(--bg-dark);
-    align-items: center;
-}
-
-.project-list>li:hover {
-    border: 0.4rem solid var(--primary);
-    transition: 0.2s;
-    margin: 1.2rem 0.8rem;
-}
-
 .project-box {
     text-align: center;
 }
@@ -401,18 +382,57 @@ section>div>h2 {
     margin: 0 1rem;
 }
 
-.project-icon-block>img {
+.project-list-pinned {
+    text-decoration: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+    padding-left: 0;
+    margin: auto auto;
+}
+
+.project-list-pinned>li {
+    border: 0.2rem solid var(--fg);
+    border-radius: 0.3rem;
+    transition: 0.2s;
+    margin: 1.2rem;
+    background: var(--bg-dark);
+    align-items: center;
+}
+
+.project-list-pinned>li:hover {
+    border: 0.4rem solid var(--primary);
+    transition: 0.2s;
+    margin: 1.5rem 0.8rem;
+}
+
+.project-pinned-icon>img {
     display: inline;
     width: 1.5rem;
 }
 
+.project-info {
+    display: flex;
+    justify-content: space-evenly;
+    color: var(--fg);
+}
+
+.project-info>div {
+    display: flex;
+}
+
+.project-license {
+    color: var(--fg);
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
 @media only screen and (max-width: 600px) {
-    .project-icon-block>img {
+    .project-pinned-icon>img {
         display: inline;
         margin: 0rem;
     }
 
-    .project-list {
+    .project-list-pinned {
         display: block;
         max-width: 100%;
         margin: auto 0;
@@ -423,6 +443,107 @@ section>div>h2 {
     }
 }
 
+.project-list {
+    text-decoration: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25%, 2fr));
+    padding-left: 0;
+    margin: auto auto;
+}
+
+.project-drawer {
+    align-items: center;
+    justify-content: space-around;
+    display: flex;
+    overflow: hidden;
+}
+
+.project-drawer>summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-weight: bold;
+    width: 100%;
+}
+
+.project-drawer>summary::-webkit-details-marker {
+    display: none;
+}
+
+.project-drawer>summary {
+    transition: 0.2s;
+}
+
+.project-drawer>summary:hover {
+    color: var(--primary);
+}
+
+.project-drawer>summary>img {
+    transition: transform 0.6s ease-in-out;
+    margin: 0 2rem;
+    width: 1rem;
+}
+
+.project-drawer-animation {
+    transform: rotate(180deg);
+}
+
+.project-drawer[open]>article {
+    animation: drawerDown .4s ease-in-out;
+}
+
+@keyframes drawerDown {
+    0% {
+        transform: translatey(-50%);
+    }
+
+    100% {
+        transform: translatey(0);
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .project-list {
+        display: block;
+        max-width: 100%;
+        margin: auto 0;
+    }
+}
+
+
+.project-list>li {
+    border: 0.2rem solid var(--fg);
+    border-radius: 0.3rem;
+    transition: 0.2s;
+    margin: 1rem;
+    background: var(--bg-dark-semi);
+    align-items: center;
+}
+
+.project-list>li:hover {
+    border: 0.4rem solid var(--primary);
+    transition: 0.2s;
+    margin: 1.2rem 0.8rem;
+}
+
+
+.project-others>h2 {
+    font-size: 1.1rem;
+}
+
+.project-others>p {
+    font-size: 0.8rem;
+    color: var(--fg);
+    font-family: 'IBMPlexMono', monospace;
+    font-style: italic;
+    margin: 0 1rem;
+}
+
+.project-others>div {
+    font-size: 0.8rem;
+}
+
 .resume-card {
     text-align: center;
     justify-content: center;
@@ -431,10 +552,10 @@ section>div>h2 {
     flex-direction: column;
     background-color: var(--bg-dark);
     border-radius: 0.3rem;
+    margin: 2.5rem;
     padding: 0.5rem;
-    margin: 5%;
-    height: 90vh;
-    width: 80%;
+    height: 87vh;
+    width: 65%;
 }
 
 .resume-card>iframe {
@@ -458,18 +579,18 @@ section>div>h2 {
     font-size: 0.8rem;
 }
 
-.footer-item {
+.footer>div {
     display: flex;
     padding: 0.2rem;
     margin: 0 2rem;
     vertical-align: top;
 }
 
-.footer-item>a {
+.footer>div>a {
     background-color: transparent;
 }
 
-.footer-item>a>img {
+.footer>div>a>img {
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 50%;
@@ -477,7 +598,7 @@ section>div>h2 {
     margin: 0 0.5rem;
 }
 
-.footer-item>a:hover {
+.footer>div>a:hover {
     transform: scale(1.3);
     transition: 0.25s;
 }

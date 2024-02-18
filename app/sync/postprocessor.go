@@ -68,6 +68,7 @@ func ProcessTemplates(path string, content *FileCache, data interface{}) []byte 
 
 type PageTemplate struct {
 	Repositories []client.Repository
+	Pinned       []client.Repository
 	Footer       struct {
 		Year int
 	}
@@ -75,8 +76,10 @@ type PageTemplate struct {
 
 // Temporary structure and its getter function that stores the data to generate index.html
 func Data() PageTemplate {
+	pinned, repos := client.GetGh()
 	return PageTemplate{
-		Repositories: client.GetGh(),
+		Pinned:       pinned,
+		Repositories: repos,
 		Footer:       struct{ Year int }{Year: time.Now().Year()},
 	}
 }

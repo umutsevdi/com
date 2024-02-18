@@ -39,7 +39,6 @@ func Serve(e *echo.Echo) {
 func ServeStatic(c echo.Context) error {
 	ip := c.RealIP()
 	path := c.Request().URL.Path
-	log.Println(path)
 	content := sync.Get(sync.STATIC, path)
 	if content == nil {
 		log.Println("GET:", ip, path, http.StatusNotFound)

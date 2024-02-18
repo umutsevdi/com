@@ -46,7 +46,6 @@ const PINNED_QUERY = `{
           url
           stargazerCount
           forkCount
-          openGraphImageUrl
           licenseInfo {
             nickname
           }
@@ -75,7 +74,6 @@ type pinnedRepositories struct {
 					Languages   struct {
 						Nodes []Language `json:"nodes"`
 					} `json:"languages"`
-					ImageUrl    string `json:"openGraphImageUrl"`
 					LicenseInfo struct {
 						Nickname string `json:"nickname"`
 					} `json:"licenseInfo"`
@@ -92,7 +90,6 @@ func (p *pinnedRepositories) setRepository(r *[6]Repository) {
 			Url:         v.Url,
 			Stars:       v.Stars,
 			Forks:       v.Forks,
-			ImageUrl:    v.ImageUrl,
 			License:     v.LicenseInfo.Nickname,
 			Language:    make([]Language, len(v.Languages.Nodes)),
 		}
@@ -102,7 +99,6 @@ func (p *pinnedRepositories) setRepository(r *[6]Repository) {
 				Name: v.Name,
 				Hex:  v.Hex,
 			}
-			r[i].DoubleSize = i == 1 || i == 2 || i == 5
 		}
 		names := []string{}
 		for _, v := range strings.Split(v.Name, "-") {
@@ -117,8 +113,8 @@ const REPO_QUERY = `{
     repositories(
       privacy: PUBLIC
       ownerAffiliations: OWNER
-      first: 20
-      orderBy: {field: CREATED_AT, direction: DESC}
+      first: 25
+      orderBy: {field: PUSHED_AT, direction: DESC}
     ) {
       nodes {
         name
@@ -126,10 +122,6 @@ const REPO_QUERY = `{
         url
         stargazerCount
         forkCount
-        primaryLanguage {
-          name
-          color
-        }
         licenseInfo {
           nickname
         }
@@ -143,12 +135,11 @@ type repositoryList struct {
 		User struct {
 			Repository struct {
 				Nodes []struct {
-					Name        string   `json:"name"`
-					Description string   `json:"description"`
-					Url         string   `json:"url"`
-					Stars       int      `json:"stargazerCount"`
-					Forks       int      `json:"forkCount"`
-					Langauge    Language `json:"primaryLanguage"`
+					Name        string `json:"name"`
+					Description string `json:"description"`
+					Url         string `json:"url"`
+					Stars       int    `json:"stargazerCount"`
+					Forks       int    `json:"forkCount"`
 					LicenseInfo struct {
 						Nickname string `json:"nickname"`
 					} `json:"licenseInfo"`
@@ -167,14 +158,21 @@ func (p *repositoryList) setRepository(r *[]Repository) {
 			Stars:       v.Stars,
 			Forks:       v.Forks,
 			License:     v.LicenseInfo.Nickname,
-			Language:    []Language{v.Langauge},
 		}
 		names := []string{}
 		for _, v := range strings.Split(v.Name, "-") {
 			names = append(names, strings.ToUpper(v[:1])+v[1:])
 		}
+		isPinned := false
 		repo.Name = strings.Join(names, " ")
-		*r = append(*r, repo)
+		for _, p := range pinned {
+			if p.Name == repo.Name {
+				isPinned = true
+			}
+		}
+		if !isPinned && len(repo.Description) > 0 && len(*r) < 16 {
+			*r = append(*r, repo)
+		}
 
 	}
 }

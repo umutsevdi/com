@@ -8,55 +8,51 @@
 <body>
     {{template "/comp/nav"}}
 
-    <section class="intro" id="home">
-        <div class="home">
-            <div class="home-card back-shadow">
-                <div class="home-img ">
-                    <img class="back-shadow" src="/static/img/profile.jpg" alt="Profile picture of Umut" />
-                </div>
-                <div class="home-text">
-                    <h1>Hi I'm <strong> Umut </strong></h1>
-                    <p>Junior Software Engineer</p>
-                </div>
-                <div class="home-social">
-                    <a target="_blank" href="https://github.com/umutsevdi" class="social-button back-shadow">
-                        <img src="/static/img/icon/gh-60.png" alt="GitHub">
-                    </a>
-                    <a target="_blank" href="https://www.linkedin.com/in/umut-sevdi/" class="social-button back-shadow">
-                        <img src="/static/img/icon/linkedin-60.png" alt="Linkedin">
-                    </a>
-                    <a target="_blank" href="mailto:mail@umutsevdi.com?subject=feedback"
-                        class="social-button back-shadow">
-                        <img src="/static/img/icon/email-60.png" alt="Email">
-                    </a>
-                </div>
-                <div class="home-social home-social-last">
-                    <a rel="me" target="_blank" href="https://mas.to/@umutsevdi" class="social-button back-shadow">
-                        <img src="/static/img/icon/mastodon-60.png" alt="Mastodon">
-                    </a>
-                </div>
-                <a href="/resume">
-                    <div class="cv-button back-shadow">
-                        <img src="/static/img/icon/resume-60.png" alt="Email">
-                        <p> Resume </p>
-                    </div>
+    <section class="landing" id="home">
+        <div class="home-card back-shadow">
+            <div class="home-img ">
+                <img class="back-shadow" src="/static/img/profile.jpg" alt="Profile picture of Umut" />
+            </div>
+            <div class="home-text">
+                <h1>Hi I'm <strong> Umut </strong></h1>
+                <p>Software Engineer</p>
+            </div>
+            <div class="home-social">
+                <a target="_blank" href="https://github.com/umutsevdi" class="social-button back-shadow">
+                    <img src="/static/img/icon/gh-60.png" alt="GitHub">
+                </a>
+                <a target="_blank" href="https://www.linkedin.com/in/umut-sevdi/" class="social-button back-shadow">
+                    <img src="/static/img/icon/linkedin-60.png" alt="Linkedin">
+                </a>
+                <a target="_blank" href="mailto:mail@umutsevdi.com?subject=feedback" class="social-button back-shadow">
+                    <img src="/static/img/icon/email-60.png" alt="Email">
                 </a>
             </div>
+            <div class="home-social home-social-last">
+                <a rel="me" target="_blank" href="https://mas.to/@umutsevdi" class="social-button back-shadow">
+                    <img src="/static/img/icon/mastodon-60.png" alt="Mastodon">
+                </a>
+            </div>
+            <a href="/resume">
+                <div class="cv-button back-shadow">
+                    <img src="/static/img/icon/resume-60.png" alt="Email">
+                    <p> Resume </p>
+                </div>
+            </a>
         </div>
     </section>
     <!-- About -->
-    <section id="about" class="section about">
+    <section id="about" class="about">
         <div class="about-text">
             <h1 align="center">About Me</h1>
             <p>
-                Hi, I'm Umut. I'm a Computer Engineering student at
-                <a class="link" target="_blank" href="https://www.yildiz.edu.tr/">Yildiz Technical University</a>. I
-                live
-                in Istanbul, Turkey. It's my senior year. I'm interested in back-end and system software development.
-                And
+                Hi, I'm Umut. I'm a software engineer located in Istanbul, Turkey. <br>
                 I'm currently working at
                 <a class="link" target="_blank" href="https://www.yapikredi.com.tr/en/">Yapi Kredi</a>
-                as a software engineer.
+                as a software engineer.<br>
+                I'm interested in back-end and system software development.
+                I graduated from <a class="link" target="_blank" href="https://www.yildiz.edu.tr/">Yildiz Technical
+                    University</a> in January 2024.
             </p>
             <h2>## Things I like</h2>
             <p>
@@ -64,11 +60,11 @@
                 development practices. I like researching, and reading articles . I'm passionate about Free and Open
                 Source Software. I have built various free and open source tools. All of their source code is
                 available at my
-                <a class="link" target="_blank" href="https://github.com/umutsevdi">Github account</a>.
+                <a class="link" target="_blank" href="https://github.com/umutsevdi">GitHub account</a>.
             </p>
             <p>I would love to contribute to the bigger ones.</p>
             <h2>## Work In Progress</h2>
-            <p> Here are the things I'm working on.</p>
+            <p> Here are the things I'm working on:</p>
             <ul class="point-list">
                 <li>A smartwatch with touchscreen from scratch using Raspberry Pi Pico in C programming language</li>
                 <li> Brauzer, a graphical web browser that supports variety of alternative web protocols such as Gemini,
@@ -76,18 +72,17 @@
             </ul>
             <h2>## Goals</h2>
             <ul class="point-list">
-                <li>Study more on C and C++, build more projects with it. </li>
+                <li>Study more on C++ and Go, build more projects with it. </li>
                 <li> Build projects with Free-RTOS. </li>
                 <li> Work on open source projects, contribute to them. </li>
+                <li> Learn and build applications with GTK. </li>
             </ul>
         </div>
     </section>
-    <section id="projects" class="projects-image">
-        <div class="section projects">
-            <div class="section">
-                <h1 align="center">Projects</h1>
-                {{template "/comp/gh" .Repositories}}
-            </div>
+    <section id="projects" class="projects">
+        <div>
+            <h1 align="center">Projects</h1>
+            {{template "/comp/gh" .Repositories}}
         </div>
     </section>
     {{template "/comp/footer" .Footer}}

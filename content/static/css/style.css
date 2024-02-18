@@ -417,8 +417,7 @@ section>article>h2 {
     display: flex;
 }
 
-.project-info>div>img,
-.project-info>p>img {
+.project-info>div>img, .project-info>p>img {
     display: inline;
     width: 1.5rem;
     height: 1.5rem;

@@ -29,5 +29,3 @@ function home() {
         arrows.forEach((arrow) => arrow.classList.toggle("hidden"));
     });
 };
-
-

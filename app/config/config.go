@@ -30,6 +30,7 @@ type Config struct {
 	ContentDir *string       `json:"directory,omitempty"`
 	Github     *GitHubConfig `json:"github,omitempty"`
 	WatchSec   *uint64       `json:"watchSec"`
+	Subdomains []string      `json:"subdomains"`
 }
 
 // Parses the configuration file at $WEBWATCH_CONFIG or config.json file
@@ -55,6 +56,7 @@ func init() {
 	fillEmptyFields()
 	log.Println("Server has been started with following configurations:",
 		"\n- Target:           ", *instance.URI, ":", *instance.Port,
+		"\n- Subdomains:      ", *&instance.Subdomains,
 		"\n- HotReload:        ", *instance.WatchSec, "sec",
 		"\n- GitHub:           {User   : ", *instance.Github.User, ", Cache: ", *instance.Github.PeriodMin, "min }",
 	)
@@ -96,3 +98,4 @@ func User() string             { return *instance.Github.User }
 func Token() string            { return *instance.Github.Token }
 func Period() int              { return int(*instance.Github.PeriodMin) }
 func WatchSecond() int         { return int(*instance.WatchSec) }
+func Subdomains() *[]string    { return &instance.Subdomains }

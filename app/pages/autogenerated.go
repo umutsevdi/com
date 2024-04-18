@@ -51,6 +51,12 @@ func sitemap(c echo.Context) error {
 				"</loc> <priority>0.8</priority> </url>")
 		}
 	})
+	s.WriteString("<!-- Subdomains -->")
+	for _, uri := range *config.Subdomains() {
+		s.WriteString("<url><loc>")
+		s.WriteString(uri)
+		s.WriteString("</loc><priority>0.7</priority></url>")
+	}
 	s.WriteString("</urlset>")
 
 	return c.Blob(http.StatusOK, mime.TypeByExtension(".xml"), []byte(s.String()))

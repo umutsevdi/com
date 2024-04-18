@@ -1,3 +1,3 @@
-#!/bin/bash
-cd /app/com/
+#!/bin/sh
+cd /data/app/umutsevdi.com/
 ./site

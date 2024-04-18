@@ -8,11 +8,7 @@
                     <img src="/static/img/icon/project-star.png">
                     <p>{{.Stars}}</p>
                 </div>
-                <p>
-                    {{range .Language}}
-                    <img src="{{.Src}}" alt="{{.Name}}">
-                    {{end}}
-                </p>
+                <p>{{range .Language}}<img src="{{.Src}}" alt="{{.Name}}">{{end}}</p>
                 <div>
                     <img src="/static/img/icon/project-fork.png">
                     <p>{{.Forks}}</p>
@@ -41,11 +37,7 @@
                             <img src="/static/img/icon/project-star.png" height="70%">
                             <p>{{.Stars}}</p>
                         </div>
-                        <p>
-                            {{range .Language}}
-                            <img src="{{.Src}}" alt="{{.Name}}">
-                            {{end}}
-                        </p>
+                        <p>{{range .Language}}<img src="{{.Src}}" alt="{{.Name}}">{{end}}</p>
                         <div>
                             <img src="/static/img/icon/project-fork.png" height="70%">
                             <p>{{.Forks}}</p>

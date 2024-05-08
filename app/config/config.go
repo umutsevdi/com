@@ -31,6 +31,7 @@ type Config struct {
 	Github     *GitHubConfig `json:"github,omitempty"`
 	WatchSec   *uint64       `json:"watchSec"`
 	Subdomains []string      `json:"subdomains"`
+	Exclude    []string      `json:exclude`
 }
 
 // Parses the configuration file at $WEBWATCH_CONFIG or config.json file
@@ -99,3 +100,4 @@ func Token() string            { return *instance.Github.Token }
 func Period() int              { return int(*instance.Github.PeriodMin) }
 func WatchSecond() int         { return int(*instance.WatchSec) }
 func Subdomains() *[]string    { return &instance.Subdomains }
+func Exclude() *[]string       { return &instance.Exclude }

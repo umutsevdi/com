@@ -46,7 +46,14 @@ func sitemap(c echo.Context) error {
     <url><loc>`)
 	s.WriteString(config.URI() + "/</loc><priority>1.0</priority></url>")
 	sync.Each(sync.PAGE, func(p string, v sync.FileCache) {
-		if len(p) > 0 && p != "/not-found" && p != "/" {
+		isHidden := p == "/not-found" || p == "/"
+		for _, v := range *config.Exclude() {
+			if strings.HasPrefix(p, v) {
+				isHidden = true
+				break
+			}
+		}
+		if len(p) > 0 && !isHidden {
 			s.WriteString("<url><loc>" + config.URI() + p +
 				"</loc> <priority>0.8</priority> </url>")
 		}

@@ -31,7 +31,7 @@ type Config struct {
 	Github     *GitHubConfig `json:"github,omitempty"`
 	WatchSec   *uint64       `json:"watchSec"`
 	Subdomains []string      `json:"subdomains"`
-	Exclude    []string      `json:exclude`
+	Exclude    []string      `json:"exclude"`
 }
 
 // Parses the configuration file at $WEBWATCH_CONFIG or config.json file

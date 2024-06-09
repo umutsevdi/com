@@ -2,90 +2,66 @@
 <html lang="en">
 
 <head>
+    <script src="/static/js/get-ascii-image.js" defer></script>
     {{template "/comp/head"}}
 </head>
 
 <body>
     {{template "/comp/nav"}}
     <main>
-        <section class="landing" id="home">
-            <article class="home-card back-shadow">
-                <div class="home-img ">
-                    <img class="back-shadow" src="/static/img/profile.jpg" alt="Profile picture of Umut" />
-                </div>
-                <div class="home-text">
-                    <h1>Hi I'm <strong> Umut </strong></h1>
-                    <p>Software Engineer</p>
-                </div>
-                <div class="home-social">
-                    <a target="_blank" href="https://github.com/umutsevdi" class="social-button back-shadow">
-                        <img src="/static/img/icon/gh-60.png" alt="GitHub">
-                    </a>
-                    <a target="_blank" href="https://www.linkedin.com/in/umut-sevdi/" class="social-button back-shadow">
-                        <img src="/static/img/icon/linkedin-60.png" alt="Linkedin">
-                    </a>
-                    <a target="_blank" href="mailto:mail@umutsevdi.com?subject=feedback"
-                        class="social-button back-shadow">
-                        <img src="/static/img/icon/email-60.png" alt="Email">
-                    </a>
-                </div>
-                <div class="home-social home-social-last">
-                    <a rel="me" target="_blank" href="https://mas.to/@umutsevdi" class="social-button back-shadow">
-                        <img src="/static/img/icon/mastodon-60.png" alt="Mastodon">
-                    </a>
-                </div>
-                <a href="/resume">
-                    <div class="cv-button back-shadow">
-                        <img src="/static/img/icon/resume-60.png" alt="Email">
-                        <p> Resume </p>
-                    </div>
-                </a>
-            </article>
+        <section id="intro">
+            <div id="intro-left">
+                <h1> WELCOME TO MY CORNER </h1>
+                <h2> /where .* is text/g </h2>
+                <p> Umut Can Sevdi </p>
+            </div>
+            <div>
+                <pre id="text-block">
+                </pre>
+            </div>
         </section>
-        <!-- About -->
-        <section id="about" class="about">
-            <article class="about-text">
-                <h1 align="center">About Me</h1>
-                <p>
-                    Hi, I'm Umut. I'm a software engineer located in Istanbul, Turkey. I'm currently working at
-                    <a class="link" target="_blank" href="https://www.yapikredi.com.tr/en/">Yapi Kredi</a>
-                    as a software engineer.
-                    I graduated from <a class="link" target="_blank" href="https://www.yildiz.edu.tr/">Yildiz Technical
-                        University</a> in January 2024.
-                </p>
-                <h2>## Things I like</h2>
-                <p>
-                    I love computers, reading and drawing. <br />
-                    I am interested in computer networks and embedded systems. I like spending time on building tools
-                    and products that I use every day.
-                    I'm passionate about Free and Open
-                    Source Software. I have built various free and open source tools. All of their source code is
-                    available at my
-                    <a class="link" target="_blank" href="https://github.com/umutsevdi">GitHub account</a>.
-                    I would love to contribute to the bigger ones.
-                </p>
-                <h2>## Work In Progress</h2>
-                <p> Here are the things I'm working on:</p>
-                <ul class="point-list">
-                    <li>A smartwatch with touchscreen from scratch using Raspberry Pi Pico in C programming language
-                    </li>
-                    <li> Brauzer, a graphical web browser that supports variety of alternative web protocols such as
-                        Gemini,
-                        Gopher and HTTP/HTTPS. </li>
-                </ul>
-                <h2>## Goals</h2>
-                <ul class="point-list">
-                    <li>Study more on C++ and Go, build more projects with them. </li>
-                    <li> Work on open source projects, contribute to them. </li>
-                    <li> Learn and build applications with GTK. </li>
-                </ul>
-            </article>
-        </section>
-        <section id="projects" class="projects">
-            <article>
-                <h1 align="center">Projects</h1>
-                {{template "/comp/gh" .}}
-            </article>
+        <article>
+            <h2>Title</h2>
+            <pre class="datebox">
+                Umut Sevdi
+                2024-05-18
+            </pre>
+            <h3>Why sun is so nice today</h3>
+            <p> Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi
+                Lorem
+                pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit
+                nostrud
+                nostrud
+                ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia
+                pariatur ut
+                officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem
+                duis
+                laboris
+                cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis
+                officia
+                eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint
+                cupidatat
+                ullamco ut ea consectetur et est culpa et culpa duis. </p>
+
+            <p>
+                Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi
+                Lorem
+                pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit
+                nostrud
+                nostrud
+                ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia
+                pariatur ut
+                officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem
+                duis
+                laboris
+                cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis
+                officia
+                eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint
+                cupidatat
+                ullamco ut ea consectetur et est culpa et culpa duis. </p>
+        </article>
+        <h1 align="center">Projects</h1>
+        {{template "/comp/gh" .}}
         </section>
     </main>
     {{template "/comp/footer" .Footer}}

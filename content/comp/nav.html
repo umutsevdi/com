@@ -1,45 +1,48 @@
 <header>
     <div class="header-left">
-        <a href="/#">
-            <img class="back-shadow" src="/static/img/favicon.jpg" />
-            <p>Home</p>
+        <a href="/#" class="header-home">
+            <p id="shorten"> umutsevdi@home</p>$
         </a>
+        <pre id="exec-text">cd ~ </pre>
+        <span class="blinking-cursor">█</span>
     </div>
-    <div class="header-right">
-        <nav class="nav">
-            <ul class="back-shadow">
-                <li class="nav-item"> <a href="/#about">About</a> </li>
-                <li class="nav-item"> <a href="/#projects">Projects</a> </li>
-                <!--                <li class="nav-item dropdown"> <a>Interests</a>
-                    <ul class="back-shadow nav-sublist">
-                        <a href="/books">
-                            <li class="sublist-item"> Books </li>
-                        </a>
-                        <a href="/movies">
-                            <li class="sublist-item"> Movies </li>
-                        </a>
-                    </ul>
-</li>-->
-                <li class="nav-item dropdown"> <a>Services</a>
-                    <ul class="back-shadow nav-sublist">
+    <nav class="header-right">
+        <ul class="header-right-list">
+            <li class="nav-item">
+                <a href="/#about"> About </a>
+            </li>
+            <li class="nav-item">
+                <a href="/#projects"> Projects </a>
+            </li>
+            <li class="nav-item dropdown"> <a>Interests</a>
+                <ul class="back-shadow nav-sublist">
+                    <li class="sublist-item">
+                        <a href="/books"> Books </a>
+                    </li>
+                    <li class="sublist-item">
+                        <a href="/movies"> Movies </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown"><a> Services </a>
+                <ul class="back-shadow nav-sublist">
+                    <li class="sublist-item">
                         <a href="https://sync.umutsevdi.com">
-                            <li class="sublist-item">Nextcloud</li>
+                            Nextcloud
                         </a>
-                        <a href="https://git.umutsevdi.com">
-                            <li class="sublist-item">Git Server</li>
-                        </a>
-                        <a href="https://draw.umutsevdi.com">
-                            <li class="sublist-item">Draw</li>
-                        </a>
-                        <a href="https://feed.umutsevdi.com">
-                            <li class="sublist-item">RSS Feed</li>
-                        </a>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </div>
-    <div class="nav-toggle back-shadow">
-        <div class="hamburger"></div>
-    </div>
+                    </li>
+                    <li class="sublist-item">
+                        <a href="https://git.umutsevdi.com"> Git </a>
+                    </li>
+                    <li class="sublist-item">
+                        <a href="https://draw.umutsevdi.com"> Draw </a>
+                    </li>
+                    <li class="sublist-item">
+                        <a href="https://feed.umutsevdi.com"> RSS Feed </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <button id="nav-burger" onclick="hamburger.onClick()">[ ]</button>
+    </nav>
 </header>
